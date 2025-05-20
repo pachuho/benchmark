@@ -21,3 +21,11 @@ dependencyResolutionManagement {
 
 rootProject.name = "benchmark"
 include(":app")
+include(":feature:login")
+include(":feature:device")
+include(":core:data")
+include(":core:domain")
+include(":core:ui")
+include(":core:navigation")
+include(":core:model")
+include(":core:designsystem")
