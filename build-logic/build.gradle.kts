@@ -1,0 +1,23 @@
+plugins {
+    `kotlin-dsl`
+    `kotlin-dsl-precompiled-script-plugins`
+}
+
+dependencies {
+    implementation(libs.android.gradlePlugin)
+    implementation(libs.kotlin.gradlePlugin)
+    implementation(libs.verify.detektPlugin)
+}
+
+gradlePlugin {
+    plugins {
+        register("androidHilt") {
+            id = "pachuho.android.hilt"
+            implementationClass = "com.pachuho.benchmark.HiltAndroidPlugin"
+        }
+        register("kotlinHilt") {
+            id = "pachuho.kotlin.hilt"
+            implementationClass = "com.pachuho.benchmark.HiltKotlinPlugin"
+        }
+    }
+}

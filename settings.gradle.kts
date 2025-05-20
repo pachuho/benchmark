@@ -1,4 +1,5 @@
 pluginManagement {
+    includeBuild("build-logic")
     repositories {
         google {
             content {
@@ -20,6 +21,7 @@ dependencyResolutionManagement {
 }
 
 rootProject.name = "benchmark"
+enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
 include(":app")
 include(":feature:login")
 include(":feature:device")
@@ -29,3 +31,4 @@ include(":core:ui")
 include(":core:navigation")
 include(":core:model")
 include(":core:designsystem")
+include(":core:testing")
