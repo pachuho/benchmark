@@ -1,5 +1,4 @@
 import com.android.build.api.dsl.ApplicationExtension
-import com.pachuho.benchmark.configureComposeAndroid
 import com.pachuho.benchmark.configureHiltAndroid
 import com.pachuho.benchmark.configureKotlinAndroid
 
@@ -13,4 +12,3 @@ extensions.configure<ApplicationExtension> {
 
 configureKotlinAndroid()
 configureHiltAndroid()
-configureComposeAndroid()

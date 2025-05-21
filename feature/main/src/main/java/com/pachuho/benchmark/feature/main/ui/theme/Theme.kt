@@ -1,6 +1,5 @@
-package com.pachuho.benchmark.ui.theme
+package com.pachuho.benchmark.feature.main.ui.theme
 
-import android.app.Activity
 import android.os.Build
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme

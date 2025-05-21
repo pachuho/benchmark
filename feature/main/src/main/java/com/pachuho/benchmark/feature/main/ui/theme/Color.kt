@@ -1,4 +1,4 @@
-package com.pachuho.benchmark.ui.theme
+package com.pachuho.benchmark.feature.main.ui.theme
 
 import androidx.compose.ui.graphics.Color
 
