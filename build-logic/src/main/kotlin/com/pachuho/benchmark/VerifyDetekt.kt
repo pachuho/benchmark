@@ -10,6 +10,6 @@ internal fun Project.configureVerifyDetekt() {
 
     val libs = extensions.libs
     dependencies {
-        "detektPlugins"(libs.findLibrary("verify.detektFormatting").get())
+        "detektPlugins"(libs.findLibrary("verify.detektPlugin").get())
     }
 }
