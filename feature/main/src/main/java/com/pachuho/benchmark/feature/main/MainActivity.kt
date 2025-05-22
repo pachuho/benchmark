@@ -11,14 +11,14 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import com.pachuho.benchmark.feature.main.ui.theme.BenchmarkTheme
+import com.pachuho.benchmark.core.designsystem.theme.BenchmarkTheme
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
-            BenchmarkTheme {
+            com.pachuho.benchmark.core.designsystem.theme.BenchmarkTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
                     Greeting(
                         name = "Android",
@@ -41,7 +41,7 @@ fun Greeting(name: String, modifier: Modifier = Modifier) {
 @Preview(showBackground = true)
 @Composable
 fun GreetingPreview() {
-    BenchmarkTheme {
+    com.pachuho.benchmark.core.designsystem.theme.BenchmarkTheme {
         Greeting("Android")
     }
 }

@@ -2,6 +2,7 @@ import com.pachuho.benchmark.setNamespace
 
 plugins {
     id("benchmark.android.library")
+    id("benchmark.android.compose")
 }
 
 android {
@@ -9,4 +10,9 @@ android {
 }
 
 dependencies {
+    implementation(libs.androidx.appcompat)
+
+    implementation(libs.landscapist.bom)
+    implementation(libs.landscapist.coil)
+    implementation(libs.landscapist.placeholder)
 }

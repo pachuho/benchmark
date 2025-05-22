@@ -1,4 +1,4 @@
-package com.pachuho.benchmark.feature.main.ui.theme
+package com.pachuho.benchmark.core.designsystem.theme
 
 import android.os.Build
 import androidx.compose.foundation.isSystemInDarkTheme
