@@ -12,11 +12,11 @@ import javax.inject.Singleton
 
 @InstallIn(SingletonComponent::class)
 @Module
-internal abstract class DataModule {
+internal object DataModule {
 
     @Provides
     @Singleton
-    fun provideSponsorRepository(
+    fun provideUserRepository(
         authApi: JHApi
     ): UserRepository = UserRepositoryImpl(authApi)
 

@@ -13,9 +13,11 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import com.pachuho.benchmark.core.designsystem.theme.BenchmarkTheme
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import java.net.UnknownHostException
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
