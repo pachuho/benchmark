@@ -5,7 +5,7 @@ import com.pachuho.benchmark.core.data.api.extension.safeApiCall
 import com.pachuho.benchmark.core.model.ResultWrapper
 import com.pachuho.benchmark.core.data.api.model.request.LoginRequest
 import com.pachuho.benchmark.core.data.mapper.toDomain
-import com.pachuho.benchmark.core.domain.model.AuthToken
+import com.pachuho.benchmark.core.model.AuthToken
 import com.pachuho.benchmark.core.domain.repository.UserRepository
 import javax.inject.Inject
 

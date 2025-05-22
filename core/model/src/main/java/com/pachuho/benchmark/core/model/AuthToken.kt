@@ -1,4 +1,4 @@
-package com.pachuho.benchmark.core.domain.model
+package com.pachuho.benchmark.core.model
 
 data class AuthToken(
     val accessToken: String,
