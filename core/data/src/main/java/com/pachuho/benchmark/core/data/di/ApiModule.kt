@@ -1,6 +1,7 @@
 package com.pachuho.benchmark.core.data.di
 
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
+import com.pachuho.benchmark.core.data.BuildConfig
 import com.pachuho.benchmark.core.data.api.JHApi
 import dagger.Module
 import dagger.Provides
@@ -35,7 +36,7 @@ internal object ApiModule {
         okHttpClient: OkHttpClient,
         converterFactory: Converter.Factory,
     ): JHApi = Retrofit.Builder()
-        .baseUrl("")
+        .baseUrl(BuildConfig.API_BASE_URL)
         .addConverterFactory(converterFactory)
         .client(okHttpClient).build()
         .create(JHApi::class.java)
