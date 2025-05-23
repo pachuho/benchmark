@@ -38,7 +38,6 @@ fun BenchmarkTopAppBar(
     navigationType: TopAppBarNavigationType = TopAppBarNavigationType.Back,
     contentColor: Color = MaterialTheme.colorScheme.onSurface,
     containerColor: Color = MaterialTheme.colorScheme.background,
-    actionButtons: @Composable () -> Unit = {},
     onNavigationClick: () -> Unit = {},
 ) {
     CompositionLocalProvider(LocalContentColor provides contentColor) {
@@ -60,7 +59,6 @@ fun BenchmarkTopAppBar(
                 .fillMaxWidth()
                 .background(containerColor)
                 .pointerInput(Unit) { /* no-op */ }
-                .padding(bottom = 10.dp)
                 .then(modifier)
         ) {
             if (navigationType == TopAppBarNavigationType.Back) {
@@ -76,7 +74,6 @@ fun BenchmarkTopAppBar(
                 )
             }
             Row(Modifier.align(Alignment.CenterEnd)) {
-                actionButtons()
                 if (navigationType == TopAppBarNavigationType.Close) {
                     icon(
                         Modifier,
@@ -104,27 +101,33 @@ enum class TopAppBarNavigationType { Back, Close, None }
 @Preview
 @Composable
 private fun BenchmarkTopAppBarPreviewNone() {
-    BenchmarkTopAppBar(
-        titleRes = android.R.string.untitled,
-        navigationType = TopAppBarNavigationType.None
-    )
+    BenchmarkTheme {
+        BenchmarkTopAppBar(
+            titleRes = android.R.string.untitled,
+            navigationType = TopAppBarNavigationType.None
+        )
+    }
 }
 
 
 @Preview
 @Composable
 private fun BenchmarkTopAppBarPreviewBack() {
-    BenchmarkTopAppBar(
-        titleRes = android.R.string.untitled,
-        navigationType = TopAppBarNavigationType.Back
-    )
+    BenchmarkTheme {
+        BenchmarkTopAppBar(
+            titleRes = android.R.string.untitled,
+            navigationType = TopAppBarNavigationType.Back
+        )
+    }
 }
 
 @Preview
 @Composable
 private fun BenchmarkTopAppBarPreviewClose() {
-    BenchmarkTopAppBar(
-        titleRes = android.R.string.untitled,
-        navigationType = TopAppBarNavigationType.Close
-    )
+    BenchmarkTheme {
+        BenchmarkTopAppBar(
+            titleRes = android.R.string.untitled,
+            navigationType = TopAppBarNavigationType.Close
+        )
+    }
 }
