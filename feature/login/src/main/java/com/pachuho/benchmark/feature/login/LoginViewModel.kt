@@ -1,5 +1,6 @@
 package com.pachuho.benchmark.feature.login
 
+import android.util.Log
 import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.Stable
 import androidx.lifecycle.ViewModel
@@ -24,7 +25,8 @@ class LoginViewModel @Inject constructor(
     val uiState get() = _uiState.asStateFlow()
 
     fun login(userName: String, password: String) = viewModelScope.launch {
-        userRepository.login(userName, password)
+        val result = userRepository.login(userName, password)
+        Log.e("asdf", "login reulst: $result")
     }
 
 }
