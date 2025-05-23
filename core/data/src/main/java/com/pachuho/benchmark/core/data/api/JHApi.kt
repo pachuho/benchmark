@@ -6,7 +6,7 @@ import retrofit2.http.Body
 import retrofit2.http.POST
 
 internal interface JHApi {
-    @POST("api/account/test/login")
+    @POST("/api/account/test/login")
     suspend fun login(
         @Body request: LoginRequest
     ): LoginResponse
