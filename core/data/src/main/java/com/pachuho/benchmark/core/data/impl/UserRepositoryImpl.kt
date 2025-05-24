@@ -6,6 +6,7 @@ import com.pachuho.benchmark.core.data.api.model.request.LoginRequest
 import com.pachuho.benchmark.core.data.mapper.toDomain
 import com.pachuho.benchmark.core.datastore.datasource.AuthTokenPreferencesDataSource
 import com.pachuho.benchmark.core.domain.repository.UserRepository
+import com.pachuho.benchmark.core.eventbus.manager.AuthEventManager
 import com.pachuho.benchmark.core.model.AuthToken
 import com.pachuho.benchmark.core.model.ResultWrapper
 import kotlinx.coroutines.flow.Flow
@@ -25,10 +26,6 @@ internal class UserRepositoryImpl @Inject constructor(
         }
 
         return result
-    }
-
-    override fun observeAuthToken(): Flow<AuthToken?> {
-        return preferencesDataSource.authTokenFlow
     }
 
     override fun isLoggedIn(): Flow<Boolean> {
