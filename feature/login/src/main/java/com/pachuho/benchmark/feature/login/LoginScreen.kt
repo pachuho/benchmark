@@ -1,12 +1,12 @@
 package com.pachuho.benchmark.feature.login
 
-import android.util.Log
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -15,6 +15,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.tooling.preview.Preview
@@ -38,29 +39,50 @@ internal fun LoginRoute(
     viewModel: LoginViewModel = hiltViewModel()
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+    val context = LocalContext.current
 
     LaunchedEffect(true) {
         viewModel.errorFlow.collectLatest { throwable -> onShowErrorSnackBar(throwable) }
     }
 
-    LoginScreen(
-        padding = padding,
-        loginUiState = uiState,
-        onLogin = { id, password ->
-            viewModel.login(id, password)
+    when (uiState) {
+        is LoginUiState.Success -> {
+            onLoginSuccess()
         }
-    )
+
+        else -> {
+            LoginScreen(
+                padding = padding,
+                uiState = uiState,
+                onLogin = { id, password ->
+                    if(hasEmpty(id, password)) {
+                        onShowErrorSnackBar(Throwable(context.getString(R.string.confirm_input)))
+                    } else {
+                        viewModel.login(id, password)
+                    }
+                }
+            )
+        }
+    }
+}
+
+fun hasEmpty(vararg values: String): Boolean {
+    return values.any { it.trim().isBlank() }
 }
 
 @Composable
 private fun LoginScreen(
     padding: PaddingValues,
-    loginUiState: LoginUiState,
+    uiState: LoginUiState,
     onLogin: (String, String) -> Unit
 ) {
     var id by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
     val keyboardController = LocalSoftwareKeyboardController.current
+
+    if (uiState is LoginUiState.Loading) {
+        LoginLoading()
+    }
 
     Column(
         modifier = Modifier
@@ -103,9 +125,17 @@ private fun LoginScreen(
             BenchmarkButton(
                 textRes = R.string.login
             ) {
+                keyboardController?.hide()
                 onLogin(id, password)
             }
         }
+    }
+}
+
+@Composable
+private fun LoginLoading() {
+    Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+        CircularProgressIndicator()
     }
 }
 
@@ -116,7 +146,7 @@ private fun LoginScreenPreview(
     BenchmarkTheme {
         LoginScreen(
             padding = PaddingValues(),
-            loginUiState = LoginUiState.Idle,
+            uiState = LoginUiState.Idle,
             onLogin = { id, password ->
 
             }

@@ -8,6 +8,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
+import com.pachuho.benchmark.feature.device.navigation.deviceNavGraph
 import com.pachuho.benchmark.feature.login.navigation.loginNavGraph
 
 @Composable
@@ -28,7 +29,12 @@ internal fun MainNavHost(
         ) {
             loginNavGraph(
                 padding = padding,
-                onLoginSuccess = { navigator.navigateLogin() },
+                onLoginSuccess = { navigator.navigateDevice() },
+                onShowErrorSnackBar = onShowErrorSnackBar
+            )
+
+            deviceNavGraph(
+                padding = padding,
                 onShowErrorSnackBar = onShowErrorSnackBar
             )
 

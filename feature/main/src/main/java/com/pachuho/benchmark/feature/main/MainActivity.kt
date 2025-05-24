@@ -33,7 +33,13 @@ class MainActivity : ComponentActivity() {
                     snackBarHostState.showSnackbar(
                         when (throwable) {
                             is UnknownHostException -> localContextResource.getString(R.string.error_message_network)
-                            else -> localContextResource.getString(R.string.error_message_unknown)
+                            else -> {
+                                throwable?.message?.let { message ->
+                                    message.ifBlank { null }
+                                } ?: run {
+                                    localContextResource.getString(R.string.error_message_unknown)
+                                }
+                            }
                         }
                     )
                 }

@@ -16,7 +16,10 @@ fun DeviceRoute(
     padding: PaddingValues,
     onShowErrorSnackBar: (throwable: Throwable?) -> Unit,
 ) {
-
+    DeviceScreen(
+        padding = padding,
+        onShowErrorSnackBar = onShowErrorSnackBar
+    )
 }
 
 @Composable
