@@ -1,5 +1,6 @@
 plugins {
     id("benchmark.android.application")
+    id("com.google.gms.google-services")
 }
 
 android {
@@ -26,6 +27,11 @@ android {
 
 dependencies {
     implementation(projects.core.navigation)
+    implementation(projects.core.datastore)
+
     implementation(projects.feature.main)
     implementation(projects.core.designsystem)
+
+    api(platform(libs.firebase.bom))
+    api(libs.firebase.messaging)
 }
