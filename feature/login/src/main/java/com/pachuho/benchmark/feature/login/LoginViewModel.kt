@@ -34,6 +34,7 @@ class LoginViewModel @Inject constructor(
                     _errorFlow.emit(Throwable(result.message))
                 }
                 is ResultWrapper.Success -> {
+                    userRepository.uploadFirebaseToken()
                     _uiState.value = LoginUiState.Success
                 }
                 ResultWrapper.NetworkError -> {

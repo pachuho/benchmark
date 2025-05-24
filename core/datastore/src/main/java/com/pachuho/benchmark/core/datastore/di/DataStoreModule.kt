@@ -19,6 +19,9 @@ object DataStoreModule {
     private const val AUTH_TOKEN_DATASTORE_NAME = "AUTH_TOKEN_PREFERENCES"
     private val Context.authTokenDataStore by preferencesDataStore(AUTH_TOKEN_DATASTORE_NAME)
 
+    private const val FIREBASE_TOKEN_DATASTORE_NAME = "FIREBASE_TOKEN_PREFERENCES"
+    private val Context.firebaseTokenDataStore by preferencesDataStore(FIREBASE_TOKEN_DATASTORE_NAME)
+
     @Provides
     @Singleton
     @Named("authToken")
@@ -26,4 +29,12 @@ object DataStoreModule {
         @ApplicationContext context: Context,
     ): DataStore<Preferences> =
         context.authTokenDataStore
+
+    @Provides
+    @Singleton
+    @Named("firebaseToken")
+    fun provideFirebaseTokenDataStore(
+        @ApplicationContext context: Context,
+    ): DataStore<Preferences> =
+        context.firebaseTokenDataStore
 }

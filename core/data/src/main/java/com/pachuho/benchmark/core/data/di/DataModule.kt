@@ -3,6 +3,7 @@ package com.pachuho.benchmark.core.data.di
 import com.pachuho.benchmark.core.data.api.JHApi
 import com.pachuho.benchmark.core.data.impl.UserRepositoryImpl
 import com.pachuho.benchmark.core.datastore.datasource.AuthTokenPreferencesDataSource
+import com.pachuho.benchmark.core.datastore.datasource.FirebaseTokenPreferencesDataSource
 import com.pachuho.benchmark.core.domain.repository.UserRepository
 
 import dagger.Module
@@ -19,7 +20,8 @@ internal object DataModule {
     @Singleton
     fun provideUserRepository(
         authApi: JHApi,
-        preferencesDataSource: AuthTokenPreferencesDataSource
-    ): UserRepository = UserRepositoryImpl(authApi, preferencesDataSource)
+        authDataSource: AuthTokenPreferencesDataSource,
+        firebaseDataSource: FirebaseTokenPreferencesDataSource
+    ): UserRepository = UserRepositoryImpl(authApi, authDataSource, firebaseDataSource)
 
 }
