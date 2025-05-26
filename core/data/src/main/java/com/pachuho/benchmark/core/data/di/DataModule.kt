@@ -1,9 +1,11 @@
 package com.pachuho.benchmark.core.data.di
 
 import com.pachuho.benchmark.core.data.api.JHApi
+import com.pachuho.benchmark.core.data.impl.DeviceRepositoryImpl
 import com.pachuho.benchmark.core.data.impl.UserRepositoryImpl
 import com.pachuho.benchmark.core.datastore.datasource.AuthTokenPreferencesDataSource
 import com.pachuho.benchmark.core.datastore.datasource.FirebaseTokenPreferencesDataSource
+import com.pachuho.benchmark.core.domain.repository.DeviceRepository
 import com.pachuho.benchmark.core.domain.repository.UserRepository
 
 import dagger.Module
@@ -24,4 +26,9 @@ internal object DataModule {
         firebaseDataSource: FirebaseTokenPreferencesDataSource
     ): UserRepository = UserRepositoryImpl(authApi, authDataSource, firebaseDataSource)
 
+    @Provides
+    @Singleton
+    fun provideDeviceRepository(
+        authApi: JHApi
+    ): DeviceRepository = DeviceRepositoryImpl(authApi)
 }

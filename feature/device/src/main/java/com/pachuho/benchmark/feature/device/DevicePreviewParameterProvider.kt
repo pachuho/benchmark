@@ -43,6 +43,6 @@ internal class DevicePreviewParameterProvider : PreviewParameterProvider<DeviceU
             )
         ),
         DeviceUiState.Loading,
-        DeviceUiState.Failure
+        DeviceUiState.Error
     )
 }

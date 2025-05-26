@@ -1,5 +1,8 @@
 package com.pachuho.benchmark.core.model
 
+import kotlinx.serialization.Serializable
+
+@Serializable
 data class Device(
     val deviceId: String,
     val projectId: String,
@@ -7,6 +10,7 @@ data class Device(
     val status: Status
 )
 
+@Serializable
 data class Status(
     val switch: Boolean
 )

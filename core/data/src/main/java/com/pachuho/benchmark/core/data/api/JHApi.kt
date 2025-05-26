@@ -3,6 +3,7 @@ package com.pachuho.benchmark.core.data.api
 import com.pachuho.benchmark.core.data.api.model.request.FirebaseTokenRequest
 import com.pachuho.benchmark.core.data.api.model.request.LoginRequest
 import com.pachuho.benchmark.core.data.api.model.request.ReissueRequest
+import com.pachuho.benchmark.core.data.api.model.response.DevicesResponse
 import com.pachuho.benchmark.core.data.api.model.response.LoginResponse
 import com.pachuho.benchmark.core.data.api.model.response.UserResponse
 import retrofit2.http.Body
@@ -32,4 +33,7 @@ internal interface JHApi {
     suspend fun deleteFirebaseToken(
         @Body request: FirebaseTokenRequest
     )
+
+    @POST("/api/device/list")
+    suspend fun getDevices(): DevicesResponse
 }

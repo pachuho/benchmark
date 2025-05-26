@@ -102,7 +102,7 @@ fun DeviceScreen(
                 BenchmarkLoading()
             }
 
-            is  DeviceUiState.Failure -> {
+            is DeviceUiState.Error -> {
                 Column(
                     modifier = Modifier.fillMaxSize(),
                     verticalArrangement = Arrangement.Center,
