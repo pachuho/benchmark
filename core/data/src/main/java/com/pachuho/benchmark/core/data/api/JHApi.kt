@@ -13,12 +13,12 @@ internal interface JHApi {
     @POST("/api/account/me")
     suspend fun getUser(): UserResponse
 
-    @POST("/api/account/test/login")
+    @POST("/api/account/beta/login")
     suspend fun login(
         @Body request: LoginRequest
     ): LoginResponse
 
-    @POST("/api/account/test/reissue")
+    @POST("/api/account/reissue")
     suspend fun reissue(
         @Body request: ReissueRequest
     ): LoginResponse
