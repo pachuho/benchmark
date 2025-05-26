@@ -10,7 +10,7 @@ internal class DevicePreviewParameterProvider : PreviewParameterProvider<DeviceU
             devices = listOf(
                 Device(
                     deviceId = "1",
-                    projectId = "2",
+                    productId = "2",
                     online = true,
                     status = Status(
                         switch = true
@@ -18,7 +18,7 @@ internal class DevicePreviewParameterProvider : PreviewParameterProvider<DeviceU
                 ),
                 Device(
                     deviceId = "2",
-                    projectId = "2",
+                    productId = "2",
                     online = true,
                     status = Status(
                         switch = true
@@ -26,7 +26,7 @@ internal class DevicePreviewParameterProvider : PreviewParameterProvider<DeviceU
                 ),
                 Device(
                     deviceId = "3",
-                    projectId = "2",
+                    productId = "2",
                     online = true,
                     status = Status(
                         switch = true
@@ -34,7 +34,7 @@ internal class DevicePreviewParameterProvider : PreviewParameterProvider<DeviceU
                 ),
                 Device(
                     deviceId = "4",
-                    projectId = "2",
+                    productId = "2",
                     online = true,
                     status = Status(
                         switch = true

@@ -21,10 +21,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.pachuho.benchmark.core.designsystem.component.BenchmarkImage
-import com.pachuho.benchmark.core.designsystem.res.rememberPainterResource
 import com.pachuho.benchmark.core.designsystem.theme.BenchmarkTheme
-import com.pachuho.benchmark.core.designsystem.theme.Blue700
 import com.pachuho.benchmark.core.model.Device
 import com.pachuho.benchmark.core.model.Status
 import com.pachuho.benchmark.core.ui.clickableWithoutEffect
@@ -101,7 +98,7 @@ private fun DeviceItemPreviewOnline() {
         DeviceItem(
             device = Device(
                 deviceId = "1",
-                projectId = "2",
+                productId = "2",
                 online = true,
                 status = Status(
                     switch = true
