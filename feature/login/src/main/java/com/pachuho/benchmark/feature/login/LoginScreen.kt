@@ -23,6 +23,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.pachuho.benchmark.core.designsystem.component.BenchmarkButton
+import com.pachuho.benchmark.core.designsystem.component.BenchmarkLoading
 import com.pachuho.benchmark.core.designsystem.component.BenchmarkTextField
 import com.pachuho.benchmark.core.designsystem.component.BenchmarkTopAppBar
 import com.pachuho.benchmark.core.designsystem.component.TextFieldType
@@ -81,7 +82,7 @@ private fun LoginScreen(
     val keyboardController = LocalSoftwareKeyboardController.current
 
     if (uiState is LoginUiState.Loading) {
-        LoginLoading()
+        BenchmarkLoading()
     }
 
     Column(
@@ -129,13 +130,6 @@ private fun LoginScreen(
                 onLogin(id, password)
             }
         }
-    }
-}
-
-@Composable
-private fun LoginLoading() {
-    Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-        CircularProgressIndicator()
     }
 }
 

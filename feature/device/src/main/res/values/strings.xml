@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="device_list">기기 목록</string>
+    <string name="failure_get_device">기기 조회 실패</string>
+</resources>

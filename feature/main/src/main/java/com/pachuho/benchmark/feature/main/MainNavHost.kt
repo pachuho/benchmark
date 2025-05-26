@@ -35,7 +35,10 @@ internal fun MainNavHost(
 
             deviceNavGraph(
                 padding = padding,
-                onShowErrorSnackBar = onShowErrorSnackBar
+                onShowErrorSnackBar = onShowErrorSnackBar,
+                onClickItem = { device ->
+
+                }
             )
 
             // TODO NavGraph 추가
