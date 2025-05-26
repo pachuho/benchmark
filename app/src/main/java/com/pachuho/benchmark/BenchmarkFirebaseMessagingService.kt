@@ -13,6 +13,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import timber.log.Timber
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -24,7 +25,7 @@ class BenchmarkFirebaseMessagingService : FirebaseMessagingService() {
         super.onMessageReceived(remoteMessage)
 
         if (remoteMessage.data.isNotEmpty()) {
-            Log.d(TAG, "Message data payload: ${remoteMessage.data}")
+            Timber.d("Message data payload: ${remoteMessage.data}")
             sendNotification(
                 remoteMessage.data["title"].toString(),
                 remoteMessage.data["body"].toString()
@@ -40,7 +41,7 @@ class BenchmarkFirebaseMessagingService : FirebaseMessagingService() {
     }
 
     override fun onNewToken(token: String) {
-        Log.d(TAG, "onNewToken: $token")
+        Timber.d("onNewToken: $token")
         super.onNewToken(token)
 
         CoroutineScope(Dispatchers.IO).launch {
@@ -49,7 +50,7 @@ class BenchmarkFirebaseMessagingService : FirebaseMessagingService() {
     }
 
     private fun sendNotification(title: String, body: String) {
-        Log.d(TAG, "sendNotification: $title, body:$body")
+        Timber.d("sendNotification: $title, body:$body")
 
         val defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
         val notificationBuilder = NotificationCompat.Builder(this, CHANNEL_ID)
@@ -73,7 +74,6 @@ class BenchmarkFirebaseMessagingService : FirebaseMessagingService() {
     }
 
     companion object {
-        private const val TAG = "BenchmarkFirebaseMessagingService"
         private const val CHANNEL_ID = "fcm_benchmark_channel"
         private const val CHANNEL_NAME = "fcm_benchmark_title"
     }

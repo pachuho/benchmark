@@ -2,6 +2,7 @@
 
 package com.pachuho.benchmark
 
+import gradle.kotlin.dsl.accessors._2fb5859a04200edaf14b854c40b2e363.implementation
 import org.gradle.api.JavaVersion
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.dependencies
@@ -43,6 +44,7 @@ internal fun Project.configureKotlinAndroid() {
     val libs = extensions.libs
 
     dependencies {
+        implementation(libs.findLibrary("timber").get())
         add("coreLibraryDesugaring", libs.findLibrary("android.desugarJdkLibs").get())
     }
 }
