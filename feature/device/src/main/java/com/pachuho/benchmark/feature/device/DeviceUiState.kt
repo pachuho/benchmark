@@ -7,9 +7,6 @@ import com.pachuho.benchmark.core.model.Device
 @Stable
 sealed interface DeviceUiState {
     @Immutable
-    data object Loading : DeviceUiState
-
-    @Immutable
     data object Error : DeviceUiState
 
     @Immutable

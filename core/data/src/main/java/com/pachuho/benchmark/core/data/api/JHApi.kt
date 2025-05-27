@@ -1,5 +1,6 @@
 package com.pachuho.benchmark.core.data.api
 
+import com.pachuho.benchmark.core.data.api.model.request.DeviceControlRequest
 import com.pachuho.benchmark.core.data.api.model.request.FirebaseTokenRequest
 import com.pachuho.benchmark.core.data.api.model.request.LoginRequest
 import com.pachuho.benchmark.core.data.api.model.request.ReissueRequest
@@ -10,6 +11,7 @@ import retrofit2.http.Body
 import retrofit2.http.DELETE
 import retrofit2.http.GET
 import retrofit2.http.POST
+import retrofit2.http.Path
 
 internal interface JHApi {
     @POST("/api/account/me")
@@ -37,4 +39,10 @@ internal interface JHApi {
 
     @GET("/api/device/list")
     suspend fun getDevices(): List<DeviceResponse>
+
+    @POST("/api/device/{deviceId}")
+    suspend fun controlDevice(
+        @Path(value = "deviceId") deviceId: String,
+        @Body request: List<DeviceControlRequest>
+    )
 }

@@ -10,8 +10,12 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
+import androidx.compose.material3.pulltorefresh.PullToRefreshBox
+import androidx.compose.material3.pulltorefresh.PullToRefreshDefaults.Indicator
+import androidx.compose.material3.pulltorefresh.rememberPullToRefreshState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -25,13 +29,13 @@ import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.pachuho.benchmark.core.designsystem.component.BenchmarkLoading
 import com.pachuho.benchmark.core.designsystem.component.BenchmarkTopAppBar
 import com.pachuho.benchmark.core.designsystem.component.TopAppBarNavigationType
 import com.pachuho.benchmark.core.designsystem.theme.BenchmarkTheme
 import com.pachuho.benchmark.core.designsystem.theme.Blue050
 import com.pachuho.benchmark.core.designsystem.theme.Blue700
 import com.pachuho.benchmark.core.model.Device
+import com.pachuho.benchmark.core.ui.DevicePreviews
 import kotlinx.coroutines.flow.collectLatest
 
 @Composable
@@ -42,6 +46,7 @@ fun DeviceRoute(
     viewModel: DeviceViewModel = hiltViewModel()
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+    val isRefreshing by viewModel.isRefreshing.collectAsStateWithLifecycle()
 
     LaunchedEffect(true) {
         viewModel.errorFlow.collectLatest { throwable -> onShowErrorSnackBar(throwable) }
@@ -50,15 +55,20 @@ fun DeviceRoute(
     DeviceScreen(
         uiState = uiState,
         padding = padding,
+        isRefreshing = isRefreshing,
+        onRefresh = { viewModel.getDevices() },
         onClickItem = onClickItem,
-        onClickControl = {}
+        onClickControl = { viewModel.toggleDevice(it)}
     )
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DeviceScreen(
     uiState: DeviceUiState,
     padding: PaddingValues,
+    isRefreshing: Boolean,
+    onRefresh: () -> Unit,
     onClickItem: (Device) -> Unit,
     onClickControl: (Device) -> Unit,
 ) {
@@ -74,32 +84,46 @@ fun DeviceScreen(
             navigationType = TopAppBarNavigationType.None,
         )
 
-        when(uiState) {
+        when (uiState) {
             is DeviceUiState.Devices -> {
-                LazyVerticalGrid(
-                    modifier = Modifier.background(color = Blue050),
-                    columns = GridCells.Adaptive(minSize = 150.dp),
-                    contentPadding = PaddingValues(12.dp),
-                    verticalArrangement = Arrangement.spacedBy(12.dp),
-                    horizontalArrangement = Arrangement.spacedBy(12.dp)
-                ) {
-                    items(
-                        items = uiState.devices,
-                        key = { device ->
-                            device.deviceId
-                        }
-                    ) { device ->
-                        DeviceItem(
-                            device = device,
-                            color = Color.White,
-                            onClickItem = { onClickItem(device) },
-                            onClickControl = { onClickControl(device) }
+                val state = rememberPullToRefreshState()
+
+                PullToRefreshBox(
+                    isRefreshing = isRefreshing,
+                    onRefresh = onRefresh,
+                    state = state,
+                    indicator = {
+                        Indicator(
+                            modifier = Modifier.align(Alignment.TopCenter),
+                            isRefreshing = isRefreshing,
+                            containerColor = Color.White,
+                            color = Blue700,
+                            state = state
                         )
                     }
+                ) {
+                    LazyVerticalGrid(
+                        modifier = Modifier.background(color = Blue050),
+                        columns = GridCells.Adaptive(minSize = 150.dp),
+                        contentPadding = PaddingValues(12.dp),
+                        verticalArrangement = Arrangement.spacedBy(12.dp),
+                        horizontalArrangement = Arrangement.spacedBy(12.dp)
+                    ) {
+                        items(
+                            items = uiState.devices,
+                            key = { device ->
+                                device.deviceId
+                            }
+                        ) { device ->
+                            DeviceItem(
+                                device = device,
+                                color = Color.White,
+                                onClickItem = { onClickItem(device) },
+                                onClickControl = { onClickControl(device) }
+                            )
+                        }
+                    }
                 }
-            }
-            is  DeviceUiState.Loading -> {
-                BenchmarkLoading()
             }
 
             is DeviceUiState.Error -> {
@@ -107,7 +131,7 @@ fun DeviceScreen(
                     modifier = Modifier.fillMaxSize(),
                     verticalArrangement = Arrangement.Center,
                     horizontalAlignment = Alignment.CenterHorizontally
-                ){
+                ) {
                     Icon(
                         modifier = Modifier.size(50.dp),
                         painter = painterResource(R.drawable.ic_error),
@@ -125,7 +149,7 @@ fun DeviceScreen(
     }
 }
 
-@Preview
+@DevicePreviews
 @Composable
 private fun DeviceScreenPreview(
     @PreviewParameter(DevicePreviewParameterProvider::class) uiState: DeviceUiState,
@@ -135,7 +159,9 @@ private fun DeviceScreenPreview(
             uiState = uiState,
             padding = PaddingValues(),
             onClickItem = {},
-            onClickControl = {}
+            onClickControl = {},
+            isRefreshing = true,
+            onRefresh = {}
         )
     }
 }
