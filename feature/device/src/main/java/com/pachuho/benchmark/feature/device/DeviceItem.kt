@@ -1,5 +1,7 @@
 package com.pachuho.benchmark.feature.device
 
+import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxWithConstraints
@@ -9,6 +11,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -17,11 +20,13 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.pachuho.benchmark.core.designsystem.theme.BenchmarkTheme
+import com.pachuho.benchmark.core.designsystem.theme.Blue700
 import com.pachuho.benchmark.core.model.Device
 import com.pachuho.benchmark.core.model.Status
 import com.pachuho.benchmark.core.ui.clickableWithoutEffect
@@ -34,35 +39,42 @@ internal fun DeviceItem(
     onClickItem: (Device) -> Unit,
     onClickControl: (Device) -> Unit
 ) {
-    val controlIcon = if (device.status.switch)
-        R.drawable.ic_power_on
-    else R.drawable.ic_power_off
+    val backgroundColor = if (device.online) color else Color.LightGray
+    val controlColor = if (device.status.switch) Blue700 else Color.Gray
 
     BoxWithConstraints(
-        modifier = modifier
-            .fillMaxWidth()
-            .clickable { onClickItem(device) }
+        modifier = modifier.fillMaxWidth()
     ) {
-        val width = maxWidth
+        val width = this.maxWidth
         val height = width * 5f / 7f // 가로:세로 = 7:5
 
         Surface(
             modifier = Modifier
                 .width(width)
-                .height(height),
-            color = color,
+                .height(height)
+                .clip(RoundedCornerShape(8.dp))
+                .clickable(
+                    enabled = device.online,
+                    onClick = {
+                        onClickItem(device)
+                    }
+                ),
+            color = backgroundColor,
             shape = RoundedCornerShape(8.dp),
             shadowElevation = 2.dp
         ) {
-            Box(modifier = Modifier
-                .fillMaxSize()
-                .padding(12.dp)) {
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(12.dp)
+            ) {
                 Icon(
                     modifier = Modifier
                         .align(Alignment.TopStart)
                         .size(width.div(4)),
                     painter = painterResource(R.drawable.ic_plug),
-                    contentDescription = null
+                    contentDescription = null,
+                    tint = Color.Unspecified
                 )
 
                 Box(
@@ -73,9 +85,13 @@ internal fun DeviceItem(
                     contentAlignment = Alignment.Center
                 ) {
                     Icon(
-                        modifier = Modifier.size(width.div(7)),
-                        painter = painterResource(controlIcon),
-                        contentDescription = null
+                        modifier = Modifier
+                            .size(width.div(7))
+                            .background(controlColor, CircleShape)
+                            .padding(4.dp),
+                        painter = painterResource(R.drawable.ic_power),
+                        contentDescription = null,
+                        tint = Color.Unspecified
                     )
                 }
 
@@ -102,6 +118,25 @@ private fun DeviceItemPreviewOnline() {
                 online = true,
                 status = Status(
                     switch = true
+                )
+            ),
+            onClickItem = {},
+            onClickControl = {}
+        )
+    }
+}
+
+@Preview(widthDp = 200)
+@Composable
+private fun DeviceItemPreviewOffline() {
+    BenchmarkTheme {
+        DeviceItem(
+            device = Device(
+                deviceId = "1",
+                productId = "2",
+                online = false,
+                status = Status(
+                    switch = false
                 )
             ),
             onClickItem = {},
