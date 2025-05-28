@@ -3,6 +3,7 @@ package com.pachuho.benchmark.feature.device
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.fillMaxSize
@@ -18,6 +19,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -41,6 +43,7 @@ internal fun DeviceItem(
 ) {
     val backgroundColor = if (device.online) color else Color.LightGray
     val controlColor = if (device.status.switch) Blue700 else Color.Gray
+    val interactionSource = remember { MutableInteractionSource() }
 
     BoxWithConstraints(
         modifier = modifier.fillMaxWidth()
@@ -57,7 +60,9 @@ internal fun DeviceItem(
                     enabled = device.online,
                     onClick = {
                         onClickItem(device)
-                    }
+                    },
+                    interactionSource = interactionSource,
+                    indication = null
                 ),
             color = backgroundColor,
             shape = RoundedCornerShape(8.dp),
