@@ -6,7 +6,6 @@ import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navOptions
-import com.pachuho.benchmark.core.navigation.MainTabRoute
 import com.pachuho.benchmark.core.navigation.Route
 import com.pachuho.benchmark.feature.device.navigation.navigateDevice
 import com.pachuho.benchmark.feature.login.navigation.navigateLogin
@@ -29,12 +28,6 @@ internal class MainNavigator(
             Route.Device -> navController.navigateDevice(navOptions)
             else -> TODO()
         }
-
-
-    }
-
-    private fun popBackStack() {
-        navController.popBackStack()
     }
 }
 
