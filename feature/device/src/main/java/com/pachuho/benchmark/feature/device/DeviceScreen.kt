@@ -41,7 +41,7 @@ import kotlinx.coroutines.flow.collectLatest
 @Composable
 fun DeviceRoute(
     padding: PaddingValues,
-    onShowErrorSnackBar: (throwable: Throwable?) -> Unit,
+    onShowErrorSnackBar: (message: Int) -> Unit,
     onClickItem: (Device) -> Unit,
     viewModel: DeviceViewModel = hiltViewModel()
 ) {

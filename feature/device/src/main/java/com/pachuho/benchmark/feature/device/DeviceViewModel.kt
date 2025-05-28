@@ -21,7 +21,7 @@ import javax.inject.Inject
 class DeviceViewModel @Inject constructor(
     private val deviceRepository: DeviceRepository
 ) : ViewModel() {
-    private val _errorFlow = MutableSharedFlow<Throwable>()
+    private val _errorFlow = MutableSharedFlow<Int>()
     val errorFlow = _errorFlow.asSharedFlow()
 
     private val _uiState = MutableStateFlow<DeviceUiState>(DeviceUiState.Devices(emptyList()))
@@ -41,11 +41,7 @@ class DeviceViewModel @Inject constructor(
                 when(result) {
                     is ResultWrapper.Error -> {
                         _uiState.value = DeviceUiState.Error
-                        _errorFlow.emit(Throwable(result.message))
-                    }
-                    ResultWrapper.NetworkError -> {
-                        _uiState.value = DeviceUiState.Error
-                        _errorFlow.emit(UnknownHostException())
+                        _errorFlow.emit(result.messageRes)
                     }
                     is ResultWrapper.Success -> {
                         _uiState.value = DeviceUiState.Devices(result.data)
@@ -77,10 +73,7 @@ class DeviceViewModel @Inject constructor(
             .map { result ->
                 when(result) {
                     is ResultWrapper.Error -> {
-                        _errorFlow.emit(Throwable(result.message))
-                    }
-                    ResultWrapper.NetworkError -> {
-                        _errorFlow.emit(UnknownHostException())
+                        _errorFlow.emit(result.messageRes)
                     }
                     is ResultWrapper.Success -> {}
                 }

@@ -9,5 +9,5 @@ interface UserRepository {
     fun isLoggedIn(): Flow<Boolean>
     suspend fun getUser(): ResultWrapper<User>
     suspend fun login(userName: String, password: String): ResultWrapper<AuthToken>
-    suspend fun uploadFirebaseToken(): Boolean
+    suspend fun uploadFirebaseToken(): ResultWrapper<Unit>
 }

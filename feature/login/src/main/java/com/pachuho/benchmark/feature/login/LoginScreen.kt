@@ -1,12 +1,10 @@
 package com.pachuho.benchmark.feature.login
 
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -29,6 +27,7 @@ import com.pachuho.benchmark.core.designsystem.component.BenchmarkTopAppBar
 import com.pachuho.benchmark.core.designsystem.component.TextFieldType
 import com.pachuho.benchmark.core.designsystem.component.TopAppBarNavigationType
 import com.pachuho.benchmark.core.designsystem.theme.BenchmarkTheme
+import com.pachuho.benchmark.core.domain.error.ErrorConstants
 import com.pachuho.benchmark.core.ui.clickableWithoutEffect
 import kotlinx.coroutines.flow.collectLatest
 
@@ -36,14 +35,14 @@ import kotlinx.coroutines.flow.collectLatest
 internal fun LoginRoute(
     padding: PaddingValues,
     onLoginSuccess: () -> Unit,
-    onShowErrorSnackBar: (throwable: Throwable?) -> Unit,
+    onShowErrorSnackBar: (message: Int) -> Unit,
     viewModel: LoginViewModel = hiltViewModel()
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val context = LocalContext.current
 
     LaunchedEffect(true) {
-        viewModel.errorFlow.collectLatest { throwable -> onShowErrorSnackBar(throwable) }
+        viewModel.errorFlow.collectLatest { onShowErrorSnackBar(it) }
     }
 
     when (uiState) {
@@ -57,7 +56,7 @@ internal fun LoginRoute(
                 uiState = uiState,
                 onLogin = { id, password ->
                     if(hasEmpty(id, password)) {
-                        onShowErrorSnackBar(Throwable(context.getString(R.string.confirm_input)))
+                        onShowErrorSnackBar(ErrorConstants.EMPTY_INPUT_TEXT)
                     } else {
                         viewModel.login(id, password)
                     }
@@ -108,14 +107,14 @@ private fun LoginScreen(
         ) {
             BenchmarkTextField(
                 text = id,
-                hintRes = R.string.text_field_id,
+                hintRes = R.string.id,
                 imeAction = ImeAction.Next,
                 onValueChange = { id = it }
             )
 
             BenchmarkTextField(
                 text = password,
-                hintRes = R.string.text_field_password,
+                hintRes = R.string.password,
                 textType = TextFieldType.Password,
                 onValueChange = { password = it },
                 onKeyboardDoneAction = {

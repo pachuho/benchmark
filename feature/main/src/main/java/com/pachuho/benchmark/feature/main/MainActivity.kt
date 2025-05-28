@@ -6,7 +6,6 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.BackHandler
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
@@ -22,7 +21,6 @@ import com.pachuho.benchmark.core.designsystem.theme.BenchmarkTheme
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
-import java.net.UnknownHostException
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
@@ -35,19 +33,10 @@ class MainActivity : ComponentActivity() {
             val coroutineScope = rememberCoroutineScope()
             val localContextResource = LocalContext.current.resources
             val snackBarHostState = remember { SnackbarHostState() }
-            val onShowErrorSnackBar: (throwable: Throwable?) -> Unit = { throwable ->
+            val onShowErrorSnackBar: (message: Int) -> Unit = { messageRes ->
                 coroutineScope.launch {
                     snackBarHostState.showSnackbar(
-                        when (throwable) {
-                            is UnknownHostException -> localContextResource.getString(R.string.error_message_network)
-                            else -> {
-                                throwable?.message?.let { message ->
-                                    message.ifBlank { null }
-                                } ?: run {
-                                    localContextResource.getString(R.string.error_message_unknown)
-                                }
-                            }
-                        }
+                        localContextResource.getString(messageRes)
                     )
                 }
             }

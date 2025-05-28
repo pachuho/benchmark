@@ -14,7 +14,7 @@ fun NavController.navigateDevice() {
 
 fun NavGraphBuilder.deviceNavGraph(
     padding: PaddingValues,
-    onShowErrorSnackBar: (throwable: Throwable?) -> Unit,
+    onShowErrorSnackBar: (message: Int) -> Unit,
     onClickItem: (Device) -> Unit
 ) {
     composable<Route.Device> {

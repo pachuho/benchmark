@@ -7,6 +7,7 @@ import com.pachuho.benchmark.core.data.api.model.request.LoginRequest
 import com.pachuho.benchmark.core.data.mapper.toDomain
 import com.pachuho.benchmark.core.datastore.datasource.AuthTokenPreferencesDataSource
 import com.pachuho.benchmark.core.datastore.datasource.FirebaseTokenPreferencesDataSource
+import com.pachuho.benchmark.core.domain.error.ErrorConstants
 import com.pachuho.benchmark.core.domain.repository.UserRepository
 import com.pachuho.benchmark.core.model.AuthToken
 import com.pachuho.benchmark.core.model.ResultWrapper
@@ -32,12 +33,11 @@ internal class UserRepositoryImpl @Inject constructor(
         return result
     }
 
-    override suspend fun uploadFirebaseToken(): Boolean {
+    override suspend fun uploadFirebaseToken(): ResultWrapper<Unit> {
         return firebaseTokenDataSource.firebaseToken.firstOrNull()?.let { token ->
-            api.uploadFirebaseToken(FirebaseTokenRequest(token))
-            true
+            safeApiCall { api.uploadFirebaseToken(FirebaseTokenRequest(token)) }
         } ?: run {
-            false
+            ResultWrapper.Error(ErrorConstants.FIRE_TOKEN_NOT_FOUND)
         }
     }
 

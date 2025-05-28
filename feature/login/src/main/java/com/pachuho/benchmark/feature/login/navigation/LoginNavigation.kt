@@ -14,7 +14,7 @@ fun NavController.navigateLogin() {
 fun NavGraphBuilder.loginNavGraph(
     padding: PaddingValues,
     onLoginSuccess: () -> Unit,
-    onShowErrorSnackBar: (throwable: Throwable?) -> Unit,
+    onShowErrorSnackBar: (message: Int) -> Unit,
 ) {
     composable<Route.Login> {
         LoginRoute(padding, onLoginSuccess, onShowErrorSnackBar)

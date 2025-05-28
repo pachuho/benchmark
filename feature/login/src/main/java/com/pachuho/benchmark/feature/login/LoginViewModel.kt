@@ -12,14 +12,13 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
-import java.net.UnknownHostException
 import javax.inject.Inject
 
 @HiltViewModel
 class LoginViewModel @Inject constructor(
     private val userRepository: UserRepository
 ) : ViewModel() {
-    private val _errorFlow = MutableSharedFlow<Throwable>()
+    private val _errorFlow = MutableSharedFlow<Int>()
     val errorFlow get() = _errorFlow.asSharedFlow()
 
     private val _uiState = MutableStateFlow<LoginUiState>(LoginUiState.Idle)
@@ -31,14 +30,11 @@ class LoginViewModel @Inject constructor(
             _uiState.value = LoginUiState.Idle
             when(result) {
                 is ResultWrapper.Error -> {
-                    _errorFlow.emit(Throwable(result.message))
+                    _errorFlow.emit(result.messageRes)
                 }
                 is ResultWrapper.Success -> {
                     userRepository.uploadFirebaseToken()
                     _uiState.value = LoginUiState.Success
-                }
-                ResultWrapper.NetworkError -> {
-                    _errorFlow.emit(UnknownHostException())
                 }
             }
 

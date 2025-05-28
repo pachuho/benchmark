@@ -16,7 +16,7 @@ internal fun MainNavHost(
     modifier: Modifier = Modifier,
     navigator: MainNavigator,
     padding: PaddingValues,
-    onShowErrorSnackBar: (throwable: Throwable?) -> Unit,
+    onShowErrorSnackBar: (message: Int) -> Unit,
 ) {
     Box(
         modifier = modifier
