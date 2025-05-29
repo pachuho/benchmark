@@ -1,6 +1,6 @@
 package com.pachuho.benchmark.core.data.auth
 
-import com.pachuho.benchmark.core.eventbus.manager.AuthEventManager
+import com.pachuho.benchmark.core.eventbus.EventBus
 import kotlinx.coroutines.runBlocking
 import okhttp3.Authenticator
 import okhttp3.Request
@@ -10,11 +10,11 @@ import javax.inject.Inject
 
 class TokenAuthenticator @Inject constructor(
     private val tokenProvider: AuthTokenProvider,
-    private val authEventManager: AuthEventManager
+    private val eventBus: EventBus
 ) : Authenticator {
     override fun authenticate(route: Route?, response: Response): Request? {
         if (responseCount(response) >= 2) {
-            authEventManager.emit(AuthEventManager.AuthEvent.ForceLogout)
+            eventBus.emit(EventBus.Event.Logout)
             return null
         }
 
@@ -27,7 +27,7 @@ class TokenAuthenticator @Inject constructor(
                 .build()
         } else {
             runBlocking { tokenProvider.logout() }
-            authEventManager.emit(AuthEventManager.AuthEvent.ForceLogout)
+            eventBus.emit(EventBus.Event.Logout)
             null
         }
     }

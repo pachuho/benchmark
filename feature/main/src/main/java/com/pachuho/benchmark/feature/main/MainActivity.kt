@@ -42,8 +42,9 @@ class MainActivity : ComponentActivity() {
             val coroutineScope = rememberCoroutineScope()
             val localContextResource = LocalContext.current.resources
             val snackBarHostState = remember { SnackbarHostState() }
-            val onShowErrorSnackBar: (message: Int) -> Unit = { messageRes ->
             val popupState = remember { mutableStateOf<EventBus.Event.Popup?>(null) }
+            val onShowErrorSnackBar: (throwable: Throwable) -> Unit = { throwable ->
+
                 coroutineScope.launch {
                     snackBarHostState.showSnackbar(
                         localContextResource.getString(messageRes)
