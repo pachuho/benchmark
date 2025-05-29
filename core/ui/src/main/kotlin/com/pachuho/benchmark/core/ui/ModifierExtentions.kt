@@ -9,9 +9,11 @@ import androidx.compose.ui.composed
 
 @Composable
 fun Modifier.clickableWithoutEffect(
+    enabled: Boolean = true,
     onClick: () -> Unit
 ) = composed {
     this.clickable(
+        enabled = enabled,
         interactionSource = remember { MutableInteractionSource() },
         indication = null
     ) {

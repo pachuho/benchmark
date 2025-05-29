@@ -94,7 +94,7 @@ private fun LoginScreen(
     ) {
 
         BenchmarkTopAppBar(
-            titleRes = R.string.login,
+            title = LocalContext.current.getString(R.string.login),
             navigationType = TopAppBarNavigationType.None,
         )
 

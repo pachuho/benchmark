@@ -4,17 +4,18 @@ import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import com.pachuho.benchmark.core.model.Device
 import com.pachuho.benchmark.core.model.Status
 
-internal class DevicePreviewParameterProvider : PreviewParameterProvider<DeviceUiState> {
+internal class DeviceDetailPreviewParameterProvider : PreviewParameterProvider<DeviceDetailUiState> {
     override val values = sequenceOf(
-        DeviceUiState.Devices(
-            devices = List(50) { index ->
+        DeviceDetailUiState.Device(
+            device =
                 Device(
-                    deviceId = (index + 1).toString(),
+                    deviceId = "1",
                     productId = "2",
                     online = true,
-                    status = Status(switch = true)
+                    status = Status(
+                        switch = true
+                    )
                 )
-            }
         )
     )
 }

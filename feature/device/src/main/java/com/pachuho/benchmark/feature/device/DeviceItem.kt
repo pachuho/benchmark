@@ -1,7 +1,6 @@
 package com.pachuho.benchmark.feature.device
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Box
@@ -86,7 +85,9 @@ internal fun DeviceItem(
                     modifier = Modifier
                         .align(Alignment.TopEnd)
                         .size(48.dp)
-                        .clickableWithoutEffect { onClickControl(device) },
+                        .clickableWithoutEffect(
+                          enabled = device.online,
+                        ) { onClickControl(device) },
                     contentAlignment = Alignment.Center
                 ) {
                     Icon(

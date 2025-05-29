@@ -1,18 +1,14 @@
 package com.pachuho.benchmark.core.designsystem.component
 
-import androidx.annotation.StringRes
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Close
-import androidx.compose.material3.Divider
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -26,14 +22,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.input.pointer.pointerInput
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.pachuho.benchmark.core.designsystem.theme.BenchmarkTheme
 
 @Composable
 fun BenchmarkTopAppBar(
-    @StringRes titleRes: Int,
+    title: String,
     modifier: Modifier = Modifier,
     navigationType: TopAppBarNavigationType = TopAppBarNavigationType.Back,
     contentColor: Color = MaterialTheme.colorScheme.onSurface,
@@ -82,7 +77,7 @@ fun BenchmarkTopAppBar(
                 }
             }
             Text(
-                text = stringResource(id = titleRes),
+                text = title,
                 style = BenchmarkTheme.typography.titleMediumB,
                 modifier = Modifier.align(Alignment.Center)
             )
@@ -103,7 +98,7 @@ enum class TopAppBarNavigationType { Back, Close, None }
 private fun BenchmarkTopAppBarPreviewNone() {
     BenchmarkTheme {
         BenchmarkTopAppBar(
-            titleRes = android.R.string.untitled,
+            title = "TopBar",
             navigationType = TopAppBarNavigationType.None
         )
     }
@@ -115,7 +110,7 @@ private fun BenchmarkTopAppBarPreviewNone() {
 private fun BenchmarkTopAppBarPreviewBack() {
     BenchmarkTheme {
         BenchmarkTopAppBar(
-            titleRes = android.R.string.untitled,
+            title = "TopBar",
             navigationType = TopAppBarNavigationType.Back
         )
     }
@@ -126,7 +121,7 @@ private fun BenchmarkTopAppBarPreviewBack() {
 private fun BenchmarkTopAppBarPreviewClose() {
     BenchmarkTheme {
         BenchmarkTopAppBar(
-            titleRes = android.R.string.untitled,
+            title = "TopBar",
             navigationType = TopAppBarNavigationType.Close
         )
     }

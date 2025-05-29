@@ -8,7 +8,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
-import com.pachuho.benchmark.core.navigation.Route
 import com.pachuho.benchmark.feature.device.navigation.deviceNavGraph
 import com.pachuho.benchmark.feature.login.navigation.loginNavGraph
 
@@ -30,7 +29,7 @@ internal fun MainNavHost(
         ) {
             loginNavGraph(
                 padding = padding,
-                onLoginSuccess = { navigator.navigate(Route.Device, true) },
+                onLoginSuccess = { navigator.navigateDevice(true) },
                 onShowErrorSnackBar = onShowErrorSnackBar
             )
 
@@ -38,11 +37,10 @@ internal fun MainNavHost(
                 padding = padding,
                 onShowErrorSnackBar = onShowErrorSnackBar,
                 onClickItem = { device ->
-
-                }
+                    navigator.navigateDeviceDetail(device.deviceId)
+                },
+                onBack = navigator::popBackStackIfNotDevice
             )
-
-            // TODO NavGraph 추가
         }
     }
 }
