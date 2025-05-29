@@ -17,6 +17,7 @@ dependencies {
     implementation(projects.feature.login)
     implementation(projects.feature.device)
     implementation(projects.core.data)
+    implementation(projects.core.eventbus)
     androidTestImplementation(projects.core.testing)
 
     implementation(libs.androidx.core.ktx)
