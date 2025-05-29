@@ -35,7 +35,7 @@ import kotlinx.coroutines.flow.collectLatest
 internal fun LoginRoute(
     padding: PaddingValues,
     onLoginSuccess: () -> Unit,
-    onShowErrorSnackBar: (message: Int) -> Unit,
+    onShowErrorSnackBar: (throwable: Throwable) -> Unit,
     viewModel: LoginViewModel = hiltViewModel()
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
@@ -56,7 +56,7 @@ internal fun LoginRoute(
                 uiState = uiState,
                 onLogin = { id, password ->
                     if(hasEmpty(id, password)) {
-                        onShowErrorSnackBar(ErrorConstants.EMPTY_INPUT_TEXT)
+                        onShowErrorSnackBar(Throwable(message = context.getString(ErrorConstants.EMPTY_INPUT_TEXT)))
                     } else {
                         viewModel.login(id, password)
                     }

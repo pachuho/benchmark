@@ -1,7 +1,7 @@
 package com.pachuho.benchmark.core.domain.error
 
 object ErrorMapper {
-    fun fromThrowable(throwable: Throwable?): Int {
+    fun fromThrowable(throwable: Throwable): Int {
         return when (throwable) {
             is java.net.UnknownHostException -> ErrorConstants.NETWORK_DISCONNECTED
             is java.net.SocketTimeoutException -> ErrorConstants.TIMEOUT
@@ -17,6 +17,8 @@ object ErrorMapper {
             is SecurityException -> ErrorConstants.PERMISSION_DENIED
             is java.io.FileNotFoundException -> ErrorConstants.FILE_NOT_FOUND
             is java.lang.UnsupportedOperationException -> ErrorConstants.FEATURE_NOT_SUPPORTED
+            is BenchmarkException -> throwable.messageRes
+
             else -> ErrorConstants.UNKNOWN
         }
     }

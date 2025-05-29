@@ -40,6 +40,11 @@ internal interface JHApi {
     @GET("/api/device/list")
     suspend fun getDevices(): List<DeviceResponse>
 
+    @GET("/api/device/{deviceId}")
+    suspend fun getDevice(
+        @Path(value = "deviceId") deviceId: String,
+    ): DeviceResponse
+
     @POST("/api/device/{deviceId}")
     suspend fun controlDevice(
         @Path(value = "deviceId") deviceId: String,

@@ -14,3 +14,12 @@ internal fun List<DeviceResponse>.toDomain(): List<Device> {
         )
     }
 }
+
+internal fun DeviceResponse.toDomain(): Device {
+    return Device(
+        deviceId = deviceId,
+        productId = productId,
+        online = online,
+        status = Status(switch = status.switch)
+    )
+}

@@ -22,6 +22,7 @@ object ErrorConstants {
     val EMPTY_ID = R.string.error_message_id_empty
     val EMPTY_PASSWORD = R.string.error_message_password_empty
     val EMPTY_INPUT_TEXT = R.string.error_message_empty_input_test
+    val INVALID_DEVICE = R.string.error_message_invalid_device
 
     val UNKNOWN = R.string.error_message_unknown
 }
