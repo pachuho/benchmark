@@ -16,8 +16,16 @@
         android:theme="@style/Theme.Benchmark"
         tools:targetApi="31">
 
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_icon"
+            android:resource="@drawable/ic_android" />
+
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_channel_id"
+            android:value="@string/channel_id" />
+
         <service
-            android:name="BenchmarkFirebaseMessagingService"
+            android:name=".core.firebase.BenchmarkFirebaseMessagingService"
             android:exported="false">
 
             <intent-filter>

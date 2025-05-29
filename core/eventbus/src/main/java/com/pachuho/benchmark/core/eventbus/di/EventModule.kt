@@ -1,6 +1,6 @@
 package com.pachuho.benchmark.core.eventbus.di
 
-import com.pachuho.benchmark.core.eventbus.manager.AuthEventManager
+import com.pachuho.benchmark.core.eventbus.EventBus
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -9,8 +9,8 @@ import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
-object AuthEventModule {
+object EventModule {
     @Provides
     @Singleton
-    fun provideAuthEventManager(): AuthEventManager = AuthEventManager()
+    fun provideEventBus(): EventBus = EventBus()
 }

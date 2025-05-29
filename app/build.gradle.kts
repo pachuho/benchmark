@@ -32,10 +32,8 @@ android {
 dependencies {
     implementation(projects.core.navigation)
     implementation(projects.core.datastore)
+    implementation(projects.core.firebase)
 
     implementation(projects.feature.main)
     implementation(projects.core.designsystem)
-
-    api(platform(libs.firebase.bom))
-    api(libs.firebase.messaging)
 }

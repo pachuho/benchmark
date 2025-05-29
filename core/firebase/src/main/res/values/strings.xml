@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="channel_id">fcm_benchmark_channel</string>
+    <string name="channel_name">fcm_benchmark_title</string>
+    <string name="invalid_message">유효하지 않은 메세지를 수신하였습니다.</string>
+</resources>
