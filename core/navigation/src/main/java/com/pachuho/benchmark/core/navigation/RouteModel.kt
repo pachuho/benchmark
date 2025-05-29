@@ -3,20 +3,23 @@ package com.pachuho.benchmark.core.navigation
 import kotlinx.serialization.Serializable
 
 sealed interface Route {
-    @Serializable
-    data object Login : Route
+    val route: String
 
     @Serializable
-    data object Device : Route
-
+    data object Login : Route {
+        override val route: String get() = ROUTE
+        private const val ROUTE = "login"
+    }
     @Serializable
-    data class DeviceDetail(val deviceId: String) : Route
-}
-
-sealed interface MainTabRoute : Route {
+    data object Device : Route {
+        override val route: String get() = ROUTE
+        private const val ROUTE = "device"
+    }
     @Serializable
-    data object Home : MainTabRoute
-
-    @Serializable
-    data object Setting : MainTabRoute
+    data class DeviceDetail(val deviceId: String) : Route {
+        override val route: String get() = ROUTE
+        companion object {
+            const val ROUTE = "device_detail/{deviceId}"
+        }
+    }
 }
