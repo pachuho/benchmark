@@ -35,6 +35,8 @@ import com.pachuho.benchmark.core.designsystem.theme.BenchmarkTheme
 import com.pachuho.benchmark.core.designsystem.theme.Blue050
 import com.pachuho.benchmark.core.designsystem.theme.Blue700
 import com.pachuho.benchmark.core.model.Device
+import com.pachuho.benchmark.core.model.Light
+import com.pachuho.benchmark.core.model.Plug
 import com.pachuho.benchmark.core.ui.DevicePreviews
 import kotlinx.coroutines.flow.collectLatest
 

@@ -23,7 +23,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -40,7 +39,7 @@ import com.pachuho.benchmark.core.ui.clickableWithoutEffect
 import kotlinx.coroutines.flow.collectLatest
 
 @Composable
-internal fun DeviceDetailRoute(
+internal fun PlugDetailRoute(
     padding: PaddingValues,
     onShowErrorSnackBar: (throwable: Throwable) -> Unit,
     onBack: () -> Unit,
@@ -82,8 +81,11 @@ private fun DeviceDetailScreen(
 
         when(uiState) {
             is DeviceDetailUiState.Device -> {
-                val controlColor = if (uiState.device.status.switch) Blue700 else Color.Gray
-                val text = if (uiState.device.status.switch) "플러그가 켜져있습니다." else "플러그가 꺼져있습니다."
+                // TODO
+                val controlColor = Blue700
+//                val controlColor = if (uiState.device.status.switch) Blue700 else Color.Gray
+                val text = "플러그가 켜져있습니다."
+//                val text = if (uiState.device.status.switch) "플러그가 켜져있습니다." else "플러그가 꺼져있습니다."
 
                 BoxWithConstraints(
                     modifier = Modifier
@@ -141,7 +143,7 @@ private fun DeviceDetailScreen(
 
 @DevicePreviews
 @Composable
-private fun DeviceDetailScreenPreview(
+private fun PlugDetailScreenPreview(
     @PreviewParameter(DeviceDetailPreviewParameterProvider::class) uiState: DeviceDetailUiState
 ) {
     BenchmarkTheme {

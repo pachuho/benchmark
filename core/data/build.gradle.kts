@@ -4,7 +4,7 @@ import java.io.FileInputStream
 
 plugins {
     id("benchmark.android.library")
-    id("kotlinx-serialization")
+    alias(libs.plugins.kotlin.serialization)
 }
 
 val localProperties = Properties().apply {

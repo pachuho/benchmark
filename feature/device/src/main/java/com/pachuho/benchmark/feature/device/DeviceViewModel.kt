@@ -61,15 +61,16 @@ class DeviceViewModel @Inject constructor(
     }
 
     private fun updateDevice(targetDevice: Device): Device? {
-        return (_uiState.value as? DeviceUiState.Devices)?.let { state ->
-            val targetDeviceId = targetDevice.deviceId
-            val updatedDevices = state.devices.map { device ->
-                if (device.deviceId == targetDeviceId) {
-                    device.copy(status = device.status.copy(switch = !device.status.switch))
-                } else device
-            }
-            _uiState.value = DeviceUiState.Devices(updatedDevices)
-            updatedDevices.find { it.deviceId == targetDeviceId }
-        }
+//        return (_uiState.value as? DeviceUiState.Devices)?.let { state ->
+//            val targetDeviceId = targetDevice.deviceId
+//            val updatedDevices = state.devices.map { device ->
+//                if (device.deviceId == targetDeviceId) {
+//                    device.copy(status = device.status.copy(switch = !device.status.switch))
+//                } else device
+//            }
+//            _uiState.value = DeviceUiState.Devices(updatedDevices)
+//            updatedDevices.find { it.deviceId == targetDeviceId }
+//        }
+        return null
     }
 }

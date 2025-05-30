@@ -42,33 +42,33 @@ class DeviceDetailViewModel @Inject constructor(
     }
 
     private fun getDevice(deviceId: String) {
-        deviceRepository.getDevice(deviceId)
-            .onEach { _uiState.value = DeviceDetailUiState.Device(it) }
-            .catch {
-                _uiState.value = DeviceDetailUiState.Error
-                _errorFlow.emit(it)
-            }
-            .launchIn(viewModelScope)
+//        deviceRepository.getDevice(deviceId)
+//            .onEach { _uiState.value = DeviceDetailUiState.Device(it) }
+//            .catch {
+//                _uiState.value = DeviceDetailUiState.Error
+//                _errorFlow.emit(it)
+//            }
+//            .launchIn(viewModelScope)
     }
 
     fun toggleDevice() {
-        (_uiState.value as? DeviceDetailUiState.Device)?.let { state ->
-            updateDevice(state.device).let { device ->
-                deviceRepository.controlDevice(device)
-                    .catch {
-                        _errorFlow.emit(it)
-                        DeviceDetailUiState.Device(updateDevice(device))
-                    }
-                    .launchIn(viewModelScope)
-            }
-        }
+//        (_uiState.value as? DeviceDetailUiState.Device)?.let { state ->
+//            updateDevice(state.device).let { device ->
+//                deviceRepository.controlDevice(device)
+//                    .catch {
+//                        _errorFlow.emit(it)
+//                        DeviceDetailUiState.Device(updateDevice(device))
+//                    }
+//                    .launchIn(viewModelScope)
+//            }
+//        }
     }
 
-    private fun updateDevice(device: Device): Device {
-        return device.copy(status = device.status.copy(switch = !device.status.switch)).apply {
-            _uiState.value = DeviceDetailUiState.Device(this)
-        }
-    }
+//    private fun updateDevice(device: Device): Device {
+//        return device.copy(status = device.status.copy(switch = !device.status.switch)).apply {
+//            _uiState.value = DeviceDetailUiState.Device(this)
+//        }
+//    }
 }
 
 @Stable

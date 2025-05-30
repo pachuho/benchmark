@@ -28,8 +28,12 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.pachuho.benchmark.core.designsystem.theme.BenchmarkTheme
 import com.pachuho.benchmark.core.designsystem.theme.Blue700
+import com.pachuho.benchmark.core.model.ControlField
 import com.pachuho.benchmark.core.model.Device
-import com.pachuho.benchmark.core.model.Status
+import com.pachuho.benchmark.core.model.Light
+import com.pachuho.benchmark.core.model.LightStatus
+import com.pachuho.benchmark.core.model.Plug
+import com.pachuho.benchmark.core.model.PlugStatus
 import com.pachuho.benchmark.core.ui.clickableWithoutEffect
 
 @Composable
@@ -41,7 +45,7 @@ internal fun DeviceItem(
     onClickControl: (Device) -> Unit
 ) {
     val backgroundColor = if (device.online) color else Color.LightGray
-    val controlColor = if (device.status.switch) Blue700 else Color.Gray
+    val controlColor = if (device.getDirectControlStatus()) Blue700 else Color.Gray
     val interactionSource = remember { MutableInteractionSource() }
 
     BoxWithConstraints(
@@ -86,7 +90,7 @@ internal fun DeviceItem(
                         .align(Alignment.TopEnd)
                         .size(48.dp)
                         .clickableWithoutEffect(
-                          enabled = device.online,
+                            enabled = device.online,
                         ) { onClickControl(device) },
                     contentAlignment = Alignment.Center
                 ) {
@@ -105,7 +109,7 @@ internal fun DeviceItem(
                     modifier = Modifier
                         .align(Alignment.CenterStart)
                         .padding(top = 20.dp),
-                    text = "플러그 Mini",
+                    text = device.getName(),
                     style = BenchmarkTheme.typography.labelMediumR,
                 )
             }
@@ -115,15 +119,18 @@ internal fun DeviceItem(
 
 @Preview(widthDp = 200)
 @Composable
-private fun DeviceItemPreviewOnline() {
+private fun DeviceItemPreviewPlug() {
     BenchmarkTheme {
         DeviceItem(
-            device = Device(
+            device = Plug(
                 deviceId = "1",
                 productId = "2",
                 online = true,
-                status = Status(
-                    switch = true
+                status = PlugStatus(
+                    ControlField(
+                        code = "switch_1",
+                        value = true
+                    )
                 )
             ),
             onClickItem = {},
@@ -134,15 +141,18 @@ private fun DeviceItemPreviewOnline() {
 
 @Preview(widthDp = 200)
 @Composable
-private fun DeviceItemPreviewOffline() {
+private fun DeviceItemPreviewLight() {
     BenchmarkTheme {
         DeviceItem(
-            device = Device(
-                deviceId = "1",
+            device = Light(
+                deviceId = "2",
                 productId = "2",
-                online = false,
-                status = Status(
-                    switch = false
+                online = true,
+                status = LightStatus(
+                    ControlField(
+                        code = "switch_led",
+                        value = true
+                    )
                 )
             ),
             onClickItem = {},
