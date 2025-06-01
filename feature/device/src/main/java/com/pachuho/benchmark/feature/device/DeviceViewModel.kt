@@ -77,10 +77,7 @@ class DeviceViewModel @Inject constructor(
                         is PlugDevice -> {
                             device.copy(
                                 status = device.status.copy(
-                                    switch = ControlField(
-                                        code = device.status.switch.code,
-                                        value = !device.status.switch.value
-                                    )
+                                    switch = device.reverseSwitch()
                                 )
                             )
                         }

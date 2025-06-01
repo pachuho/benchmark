@@ -1,4 +1,4 @@
-package com.pachuho.benchmark.feature.device
+package com.pachuho.benchmark.feature.device.detail
 
 import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.Stable
@@ -13,6 +13,9 @@ import com.pachuho.benchmark.core.model.device.Device
 import com.pachuho.benchmark.core.model.device.CameraDevice
 import com.pachuho.benchmark.core.model.device.LightDevice
 import com.pachuho.benchmark.core.model.device.PlugDevice
+import com.pachuho.benchmark.core.model.device.PlugStatus
+import com.pachuho.benchmark.feature.device.DeviceUiState
+import com.pachuho.benchmark.feature.device.detail.component.getUpdatedDevice
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -55,65 +58,23 @@ class DeviceDetailViewModel @Inject constructor(
             .launchIn(viewModelScope)
     }
 
-    fun toggleDevice() {
-        try {
-            (_uiState.value as? DeviceDetailUiState.Device)?.let { state ->
-                updateDevice(state.device).let { device ->
-                    val field = when(device) {
-                        is PlugDevice -> device.status.switch
-                        is LightDevice -> device.status.switch
-                        is CameraDevice -> device.status.indicator
-                        else -> throw BenchmarkException(ErrorConstants.INVALID_DEVICE)
+    fun <T> controlDevice(controlField: ControlField<T>) {
+        (_uiState.value as? DeviceDetailUiState.Device)?.let { state ->
+
+            val newDevice = getUpdatedDevice(state.device, controlField)
+
+            newDevice?.let {
+                _uiState.value = DeviceDetailUiState.Device(it)
+                deviceRepository.controlDevice(state.device.deviceId, controlField)
+                    .catch {
+                        _errorFlow.emit(it)
+                        _uiState.value = DeviceDetailUiState.Device(state.device)
                     }
-
-                    deviceRepository.controlDevice(device.deviceId, field)
-                        .catch {
-                            _errorFlow.emit(it)
-                            DeviceDetailUiState.Device(updateDevice(device))
-                        }
-                        .launchIn(viewModelScope)
-                }
+                    .launchIn(viewModelScope)
+            } ?: run {
+                _uiState.value = DeviceDetailUiState.Device(state.device)
+                _errorFlow.tryEmit(BenchmarkException(ErrorConstants.INVALID_DEVICE))
             }
-        } catch (e: Exception) {
-            _errorFlow.tryEmit(e)
-        }
-    }
-
-    private fun updateDevice(device: Device): Device {
-        return when(device) {
-            is PlugDevice -> {
-                device.copy(
-                    status = device.status.copy(
-                        switch = ControlField(
-                            code = device.status.switch.code,
-                            value = !device.status.switch.value
-                        )
-                    )
-                )
-            }
-            is LightDevice -> {
-                device.copy(
-                    status = device.status.copy(
-                        switch = ControlField(
-                            code = device.status.switch.code,
-                            value = !device.status.switch.value
-                        )
-                    )
-                )
-            }
-            is CameraDevice -> {
-                device.copy(
-                    status = device.status.copy(
-                        indicator = ControlField(
-                            code = device.status.indicator.code,
-                            value = !device.status.indicator.value
-                        )
-                    )
-                )
-            }
-            else -> throw IllegalArgumentException()
-        }.apply {
-            _uiState.value = DeviceDetailUiState.Device(this)
         }
     }
 }

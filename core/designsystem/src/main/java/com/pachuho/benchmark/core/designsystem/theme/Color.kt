@@ -14,3 +14,6 @@ val Blue050 = Color(0xFFF4F9FF)
 
 val Blue100 = Color(0xFFEBF3FF)
 val Blue700 = Color(0xFF003B70)
+
+
+val Yellow700 = Color(0xFFFFF5C0)

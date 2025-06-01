@@ -1,7 +1,7 @@
 package com.pachuho.benchmark.core.data.mapper
 
 import com.pachuho.benchmark.core.data.api.model.response.DeviceResponse
-import com.pachuho.benchmark.core.model.device.DeviceBasic
+import com.pachuho.benchmark.core.model.device.BasicDevice
 import com.pachuho.benchmark.core.model.device.CameraStatus
 import com.pachuho.benchmark.core.model.device.CameraDevice
 import com.pachuho.benchmark.core.model.device.Device
@@ -38,7 +38,7 @@ internal fun DeviceResponse.toDomain(): Device {
             status = CameraStatus.fromJsonObj(status)
         )
 
-        StatusType.Basic -> DeviceBasic(
+        StatusType.Basic -> BasicDevice(
             name = name,
             deviceId = deviceId,
             productId = productId,

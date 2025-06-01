@@ -10,7 +10,7 @@ import androidx.navigation.navArgument
 import com.pachuho.benchmark.core.model.device.Device
 import com.pachuho.benchmark.core.navigation.Route
 import com.pachuho.benchmark.core.navigation.composableWithAnimation
-import com.pachuho.benchmark.feature.device.PlugDetailRoute
+import com.pachuho.benchmark.feature.device.detail.PlugDetailRoute
 import com.pachuho.benchmark.feature.device.DeviceRoute
 
 fun NavController.navigateDevice(navOptions: NavOptions) {

@@ -6,6 +6,7 @@ import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.boolean
 import kotlinx.serialization.json.int
 import kotlinx.serialization.json.jsonPrimitive
+import kotlin.math.roundToInt
 
 @Serializable
 data class LightDevice(
@@ -17,7 +18,21 @@ data class LightDevice(
     override val status: LightStatus
 ) : Device {
     override fun getDirectControlStatus() = this.status.switch.value
-    override fun getControlText() = if (this.status.switch.value) "무드등이 켜져있습니다." else "무드등이 꺼져있습니다."
+    override fun getControlText() = if (this.status.switch.value) "밝기: ${status.bright.value}%" else "무드등이 꺼져있습니다."
+
+    fun reverseSwitch(): ControlField<Boolean> {
+        return ControlField(
+            code = this.status.switch.code,
+            value = !this.status.switch.value
+        )
+    }
+
+    fun updateBright(value: Int): ControlField<Int> {
+        return ControlField(
+            code = this.status.bright.code,
+            value = value
+        )
+    }
 }
 
 @Serializable

@@ -1,18 +1,14 @@
-package com.pachuho.benchmark.feature.device
+package com.pachuho.benchmark.feature.device.detail
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -20,9 +16,9 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -33,9 +29,13 @@ import com.pachuho.benchmark.core.designsystem.component.TopAppBarNavigationType
 import com.pachuho.benchmark.core.designsystem.theme.BenchmarkTheme
 import com.pachuho.benchmark.core.designsystem.theme.Blue050
 import com.pachuho.benchmark.core.designsystem.theme.Blue700
+import com.pachuho.benchmark.core.model.device.ControlField
 import com.pachuho.benchmark.core.model.device.Device
-import com.pachuho.benchmark.core.ui.DevicePreviews
-import com.pachuho.benchmark.core.ui.clickableWithoutEffect
+import com.pachuho.benchmark.core.model.device.LightDevice
+import com.pachuho.benchmark.core.model.device.PlugDevice
+import com.pachuho.benchmark.feature.device.R
+import com.pachuho.benchmark.feature.device.detail.component.LightComponent
+import com.pachuho.benchmark.feature.device.detail.component.PlugComponent
 import kotlinx.coroutines.flow.collectLatest
 
 @Composable
@@ -55,7 +55,7 @@ internal fun PlugDetailRoute(
         uiState = uiState,
         padding = padding,
         onBack = onBack,
-        onControl = { viewModel.toggleDevice() }
+        onControl = { viewModel.controlDevice(it) }
     )
 }
 
@@ -65,7 +65,7 @@ private fun DeviceDetailScreen(
     uiState: DeviceDetailUiState,
     padding: PaddingValues,
     onBack: () -> Unit,
-    onControl: (Device) -> Unit,
+    onControl: (ControlField<*>) -> Unit,
 ) {
     Box(
         modifier = Modifier
@@ -75,7 +75,6 @@ private fun DeviceDetailScreen(
         when(uiState) {
             is DeviceDetailUiState.Device -> {
                 val device = uiState.device
-                val controlColor = if (device.getDirectControlStatus()) Blue700 else Color.Gray
 
                 BenchmarkTopAppBar(
                     modifier = Modifier.align(Alignment.TopCenter),
@@ -84,34 +83,9 @@ private fun DeviceDetailScreen(
                     onNavigationClick = onBack
                 )
 
-                BoxWithConstraints(
-                    modifier = Modifier
-                        .fillMaxSize(),
-                    contentAlignment = Alignment.Center
-                ) {
-                    val minSide = minOf(maxWidth, maxHeight)
-                    val iconSize = minSide / 3
-
-                    Column(
-                        verticalArrangement = Arrangement.spacedBy(32.dp),
-                        horizontalAlignment = Alignment.CenterHorizontally
-                    ) {
-                        Icon(
-                            modifier = Modifier
-                                .width(iconSize)
-                                .height(iconSize)
-                                .background(controlColor, CircleShape)
-                                .clickableWithoutEffect { onControl(uiState.device) },
-                            painter = painterResource(R.drawable.ic_power),
-                            contentDescription = null,
-                            tint = Color.Unspecified
-                        )
-
-                        Text(
-                            text = device.getControlText(),
-                            style = BenchmarkTheme.typography.titleMediumR,
-                        )
-                    }
+                when(device) {
+                    is PlugDevice -> PlugComponent(device, onControl)
+                    is LightDevice -> LightComponent(device, onControl)
                 }
             }
             DeviceDetailUiState.Error -> {
@@ -145,7 +119,7 @@ private fun DeviceDetailScreen(
     }
 }
 
-@DevicePreviews
+@Preview
 @Composable
 private fun PlugDetailScreenPreview(
     @PreviewParameter(DeviceDetailPreviewParameterProvider::class) uiState: DeviceDetailUiState

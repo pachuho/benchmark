@@ -1,6 +1,8 @@
-package com.pachuho.benchmark.feature.device
+package com.pachuho.benchmark.feature.device.detail
 
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
+import com.pachuho.benchmark.core.model.device.CameraDevice
+import com.pachuho.benchmark.core.model.device.CameraStatus
 import com.pachuho.benchmark.core.model.device.ControlField
 import com.pachuho.benchmark.core.model.device.LightDevice
 import com.pachuho.benchmark.core.model.device.LightStatus
@@ -11,13 +13,13 @@ internal class DeviceDetailPreviewParameterProvider : PreviewParameterProvider<D
     override val values = sequenceOf(
         DeviceDetailUiState.Device(
             device = PlugDevice(
-                name = "플러그_미니 1",
-                deviceId = "1",
-                productId = "2",
+                deviceId = "s8616242a58d13cc66xszg",
+                productId = "uxjr57hvapakd0io",
+                name = "플러그 Mini 2",
                 online = true,
                 status = PlugStatus(
                     ControlField(
-                        code = "switch_1",
+                        code = "switch",
                         value = true
                     )
                 )
@@ -25,22 +27,40 @@ internal class DeviceDetailPreviewParameterProvider : PreviewParameterProvider<D
         ),
         DeviceDetailUiState.Device(
             device = LightDevice(
-                name = "무드등 1",
-                deviceId = "2",
-                productId = "2",
+                name = "무드등",
+                deviceId = "52868143a4e57c1e4112",
+                productId = "mhf0rqd7uuvz6hf8",
                 online = true,
                 status = LightStatus(
                     switch = ControlField(
-                        code = "switchLed",
+                        code = "switch",
                         value = true
                     ),
                     bright = ControlField(
-                        code = "brightValue",
+                        code = "bright",
                         value = 1
                     ),
                     mode = ControlField(
-                        code = "workMode",
+                        code = "mode",
                         value = "white"
+                    )
+                )
+            )
+        ),
+        DeviceDetailUiState.Device(
+            device = CameraDevice(
+                name = "홈카메라 Pro+",
+                deviceId = "s856571db9d4ecc43e4ijg",
+                productId = "3cwbcqiz8qixphvu",
+                online = true,
+                status = CameraStatus(
+                    indicator = ControlField(
+                        code = "switch",
+                        value = true
+                    ),
+                    privateMode = ControlField(
+                        code = "bright",
+                        value = true
                     )
                 )
             )
