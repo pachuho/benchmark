@@ -30,10 +30,30 @@ data class PlugDevice(
 data class PlugStatus(
     val switch: ControlField<Boolean>
 ) {
-    companion object {
-        fun fromJsonObj(obj: JsonObject): PlugStatus {
-            val value = obj["switch"]?.jsonPrimitive?.boolean ?: false
-            return PlugStatus(switch = ControlField("switch", value))
+    fun update(controlField: ControlField<JsonObject>): PlugStatus {
+        return when (controlField.code) {
+            PlugStatusType.Switch.code -> this.copy(
+                switch = ControlField(
+                    code = PlugStatusType.Switch.code,
+                    value = controlField.value[PlugStatusType.Switch.code]?.jsonPrimitive?.boolean
+                        ?: switch.value
+                )
+            )
+
+            else -> this
         }
     }
+
+    companion object {
+        fun fromJsonObj(obj: JsonObject): PlugStatus {
+            val value = obj[PlugStatusType.Switch.code]?.jsonPrimitive?.boolean ?: false
+            return PlugStatus(switch = ControlField(PlugStatusType.Switch.code, value))
+        }
+    }
+}
+
+enum class PlugStatusType(
+    val code: String
+) {
+    Switch("switch");
 }

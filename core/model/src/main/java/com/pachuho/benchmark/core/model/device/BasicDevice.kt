@@ -23,10 +23,30 @@ data class BasicDevice(
 data class BasicStatus(
     val switch: ControlField<Boolean>
 ) {
-    companion object {
-        fun fromJsonObj(obj: JsonObject): BasicStatus {
-            val value = obj["switch"]?.jsonPrimitive?.boolean ?: false
-            return BasicStatus(switch = ControlField("switch", value))
+    fun update(controlField: ControlField<JsonObject>): BasicStatus {
+        return when (controlField.code) {
+            BasicStatusType.Switch.code -> this.copy(
+                switch = ControlField(
+                    code = BasicStatusType.Switch.code,
+                    value = controlField.value[BasicStatusType.Switch.code]?.jsonPrimitive?.boolean
+                        ?: switch.value
+                )
+            )
+
+            else -> this
         }
     }
+
+    companion object {
+        fun fromJsonObj(obj: JsonObject): BasicStatus {
+            val value = obj[BasicStatusType.Switch.code]?.jsonPrimitive?.boolean ?: false
+            return BasicStatus(switch = ControlField(BasicStatusType.Switch.code, value))
+        }
+    }
+}
+
+enum class BasicStatusType(
+    val code: String
+) {
+    Switch("switch");
 }

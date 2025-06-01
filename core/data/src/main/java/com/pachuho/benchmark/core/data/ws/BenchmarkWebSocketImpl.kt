@@ -1,14 +1,17 @@
 package com.pachuho.benchmark.core.data.ws
 
 import com.pachuho.benchmark.core.domain.socket.BenchmarkWebSocket
+import com.pachuho.benchmark.core.model.device.SocketMessage
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.receiveAsFlow
+import kotlinx.serialization.json.Json
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.Response
 import okhttp3.WebSocket
 import okhttp3.WebSocketListener
+import timber.log.Timber
 import javax.inject.Inject
 
 class BenchmarkWebSocketImpl @Inject constructor(
@@ -16,14 +19,19 @@ class BenchmarkWebSocketImpl @Inject constructor(
 ) : BenchmarkWebSocket {
 
     private var webSocket: WebSocket? = null
-    private val _messageChannel = Channel<String>(Channel.BUFFERED)
-    override val messages: Flow<String> get() = _messageChannel.receiveAsFlow()
+    private val _messageChannel = Channel<SocketMessage>(Channel.BUFFERED)
+    override val messages: Flow<SocketMessage> get() = _messageChannel.receiveAsFlow()
 
     override fun connect(url: String) {
         val request = Request.Builder().url(url).build()
         webSocket = client.newWebSocket(request, object : WebSocketListener() {
             override fun onMessage(webSocket: WebSocket, text: String) {
-                _messageChannel.trySend(text)
+                Timber.e("onMessage: $text")
+                try {
+                    _messageChannel.trySend(text.toSocketMessage())
+                } catch (e: Exception) {
+                    Timber.e(e)
+                }
             }
             override fun onClosed(webSocket: WebSocket, code: Int, reason: String) {
                 _messageChannel.close()
@@ -36,5 +44,9 @@ class BenchmarkWebSocketImpl @Inject constructor(
     override fun disconnect() {
         webSocket?.close(1000, null)
         webSocket = null
+    }
+
+    private fun String.toSocketMessage(): SocketMessage {
+        return Json.decodeFromString<SocketMessage>(this)
     }
 }

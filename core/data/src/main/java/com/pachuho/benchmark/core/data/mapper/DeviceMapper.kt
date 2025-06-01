@@ -10,9 +10,7 @@ import com.pachuho.benchmark.core.model.device.LightDevice
 import com.pachuho.benchmark.core.model.device.LightStatus
 import com.pachuho.benchmark.core.model.device.PlugDevice
 import com.pachuho.benchmark.core.model.device.PlugStatus
-import com.pachuho.benchmark.core.model.device.SocketMessage
 import com.pachuho.benchmark.core.model.device.StatusType
-import kotlinx.serialization.json.Json
 
 internal fun DeviceResponse.toDomain(): Device {
     return when (StatusType.from(productId)) {

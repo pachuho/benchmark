@@ -6,7 +6,6 @@ import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.boolean
 import kotlinx.serialization.json.int
 import kotlinx.serialization.json.jsonPrimitive
-import kotlin.math.roundToInt
 
 @Serializable
 data class LightDevice(
@@ -44,10 +43,42 @@ data class LightStatus(
     companion object {
         fun fromJsonObj(obj: JsonObject): LightStatus {
             return LightStatus(
-                switch = ControlField("switch", obj["switch"]?.jsonPrimitive?.boolean ?: false),
-                bright = ControlField("bright", obj["bright"]?.jsonPrimitive?.int ?: 0),
-                mode = ControlField("mode", obj["mode"]?.jsonPrimitive?.content ?: "white")
+                switch = ControlField(LightStatusType.Switch.code, obj[LightStatusType.Switch.code]?.jsonPrimitive?.boolean ?: false),
+                bright = ControlField(LightStatusType.Bright.code, obj[LightStatusType.Bright.code]?.jsonPrimitive?.int ?: 0),
+                mode = ControlField(LightStatusType.Mode.code, obj[LightStatusType.Mode.code]?.jsonPrimitive?.content ?: "white")
             )
         }
     }
+
+    fun update(controlField: ControlField<JsonObject>): LightStatus {
+        return when (controlField.code) {
+            LightStatusType.Switch.code -> this.copy(
+                switch = ControlField(
+                    code = LightStatusType.Switch.code,
+                    value = controlField.value[LightStatusType.Switch.code]?.jsonPrimitive?.boolean ?: switch.value
+                )
+            )
+            LightStatusType.Bright.code -> this.copy(
+                bright = ControlField(
+                    code = LightStatusType.Bright.code,
+                    value = controlField.value[LightStatusType.Bright.code]?.jsonPrimitive?.int ?: bright.value
+                )
+            )
+            LightStatusType.Mode.code -> this.copy(
+                mode = ControlField(
+                    code = LightStatusType.Mode.code,
+                    value = controlField.value[LightStatusType.Mode.code]?.jsonPrimitive?.content ?: mode.value
+                )
+            )
+            else -> this
+        }
+    }
+}
+
+enum class LightStatusType(
+    val code: String
+) {
+    Switch("switch"),
+    Bright("bright"),
+    Mode("mode");
 }

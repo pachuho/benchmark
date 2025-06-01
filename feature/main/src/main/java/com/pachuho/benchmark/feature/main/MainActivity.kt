@@ -23,6 +23,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.pachuho.benchmark.core.designsystem.theme.BenchmarkTheme
 import com.pachuho.benchmark.core.domain.error.BenchmarkException
 import com.pachuho.benchmark.core.domain.error.ErrorMapper
@@ -30,6 +31,7 @@ import com.pachuho.benchmark.core.eventbus.EventBus
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
+import timber.log.Timber
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -67,6 +69,14 @@ class MainActivity : ComponentActivity() {
                         localContextResource.getString(ErrorMapper.fromThrowable(throwable))
                     )
                 }
+            }
+
+            // TODO Remove
+            val messages = viewModel.socketMessage.collectAsStateWithLifecycle("", this)
+
+            LaunchedEffect(messages) {
+                // messages가 바뀔 때마다 이 블록이 재실행
+                Timber.e("message: $messages")
             }
 
             LaunchedEffect(Unit) {
