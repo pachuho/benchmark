@@ -34,6 +34,7 @@ import com.pachuho.benchmark.core.designsystem.component.TopAppBarNavigationType
 import com.pachuho.benchmark.core.designsystem.theme.BenchmarkTheme
 import com.pachuho.benchmark.core.designsystem.theme.Blue050
 import com.pachuho.benchmark.core.designsystem.theme.Blue700
+import com.pachuho.benchmark.core.model.device.ControlField
 import com.pachuho.benchmark.core.model.device.Device
 import com.pachuho.benchmark.core.ui.DevicePreviews
 import kotlinx.coroutines.flow.collectLatest
@@ -58,7 +59,9 @@ fun DeviceRoute(
         isRefreshing = isRefreshing,
         onRefresh = { viewModel.getDevices() },
         onClickItem = onClickItem,
-        onClickControl = { viewModel.toggleDevice(it)}
+        onControl = { deviceId, controlField ->
+            viewModel.controlDevice(deviceId, controlField)
+        }
     )
 }
 
@@ -70,7 +73,7 @@ fun DeviceScreen(
     isRefreshing: Boolean,
     onRefresh: () -> Unit,
     onClickItem: (Device) -> Unit,
-    onClickControl: (Device) -> Unit,
+    onControl: (String, ControlField<*>) -> Unit,
 ) {
     Column(
         modifier = Modifier
@@ -119,7 +122,7 @@ fun DeviceScreen(
                                 device = device,
                                 color = Color.White,
                                 onClickItem = { onClickItem(device) },
-                                onClickControl = { onClickControl(device) }
+                                onControl = onControl
                             )
                         }
                     }
@@ -159,7 +162,8 @@ private fun DeviceScreenPreview(
             uiState = uiState,
             padding = PaddingValues(),
             onClickItem = {},
-            onClickControl = {},
+            onControl = { deviceId, controlField ->
+            },
             isRefreshing = true,
             onRefresh = {}
         )

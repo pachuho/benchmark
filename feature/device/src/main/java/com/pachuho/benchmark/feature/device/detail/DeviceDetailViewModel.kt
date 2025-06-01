@@ -9,13 +9,7 @@ import com.pachuho.benchmark.core.domain.error.BenchmarkException
 import com.pachuho.benchmark.core.domain.error.ErrorConstants
 import com.pachuho.benchmark.core.domain.repository.DeviceRepository
 import com.pachuho.benchmark.core.model.device.ControlField
-import com.pachuho.benchmark.core.model.device.Device
-import com.pachuho.benchmark.core.model.device.CameraDevice
-import com.pachuho.benchmark.core.model.device.LightDevice
-import com.pachuho.benchmark.core.model.device.PlugDevice
-import com.pachuho.benchmark.core.model.device.PlugStatus
-import com.pachuho.benchmark.feature.device.DeviceUiState
-import com.pachuho.benchmark.feature.device.detail.component.getUpdatedDevice
+import com.pachuho.benchmark.core.model.device.getUpdatedDevice
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow

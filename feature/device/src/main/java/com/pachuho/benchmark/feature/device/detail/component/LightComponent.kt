@@ -1,16 +1,15 @@
 package com.pachuho.benchmark.feature.device.detail.component
 
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Slider
+import androidx.compose.material3.SliderDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -23,7 +22,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.pachuho.benchmark.core.designsystem.theme.BenchmarkTheme
-import com.pachuho.benchmark.core.designsystem.theme.Blue050
+import com.pachuho.benchmark.core.designsystem.theme.Blue700
 import com.pachuho.benchmark.core.model.device.ControlField
 import com.pachuho.benchmark.core.model.device.LightDevice
 import com.pachuho.benchmark.core.model.device.LightStatus
@@ -82,7 +81,12 @@ internal fun LightComponent(
                             onControl(device.updateBright(sliderValue.roundToInt()))
                         },
                         valueRange = 1f..100f,
-                        steps = 0
+                        steps = 0,
+                        colors = SliderDefaults.colors(
+                            thumbColor = Blue700,
+                            activeTrackColor = Blue700,
+                            inactiveTrackColor = Blue700.copy(alpha = 0.3f),
+                        )
                     )
 
                     Text(
@@ -90,9 +94,6 @@ internal fun LightComponent(
                         style = BenchmarkTheme.typography.labelMediumR,
                     )
                 }
-            }
-            if (!device.status.switch.value) {
-                Spacer(Modifier.height(64.dp))
             }
         }
     }

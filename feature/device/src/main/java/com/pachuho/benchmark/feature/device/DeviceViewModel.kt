@@ -5,10 +5,13 @@ import androidx.lifecycle.viewModelScope
 import com.pachuho.benchmark.core.domain.error.BenchmarkException
 import com.pachuho.benchmark.core.domain.error.ErrorConstants
 import com.pachuho.benchmark.core.domain.repository.DeviceRepository
+import com.pachuho.benchmark.core.model.device.CameraDevice
 import com.pachuho.benchmark.core.model.device.ControlField
 import com.pachuho.benchmark.core.model.device.Device
 import com.pachuho.benchmark.core.model.device.LightDevice
 import com.pachuho.benchmark.core.model.device.PlugDevice
+import com.pachuho.benchmark.core.model.device.getUpdatedDevice
+import com.pachuho.benchmark.feature.device.detail.DeviceDetailUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -50,53 +53,23 @@ class DeviceViewModel @Inject constructor(
             .launchIn(viewModelScope)
     }
 
-    fun toggleDevice(targetDevice: Device) {
-        updateDevice(targetDevice)?.let { device ->
-            val field = when(device) {
-                is PlugDevice -> device.status.switch
-                is LightDevice -> device.status.switch
-                else -> throw BenchmarkException(ErrorConstants.INVALID_DEVICE)
-            }
-            deviceRepository.controlDevice(device.deviceId, field)
-                .catch {
-                    _errorFlow.emit(it)
-                    updateDevice(device)
+    fun <T> controlDevice(deviceId: String, controlField: ControlField<T>) {
+        fun updateDevices() {
+            (_uiState.value as? DeviceUiState.Devices)?.let { state ->
+                val updatedDevices = state.devices.map { device ->
+                    if (device.deviceId == deviceId) {
+                        getUpdatedDevice(device, controlField) ?: device
+                    } else device
                 }
-                .launchIn(viewModelScope)
-        } ?: run {
-            _errorFlow.tryEmit(BenchmarkException(ErrorConstants.INVALID_DEVICE))
-        }
-    }
-
-    private fun updateDevice(targetDevice: Device): Device? {
-        return (_uiState.value as? DeviceUiState.Devices)?.let { state ->
-            val targetDeviceId = targetDevice.deviceId
-            val updatedDevices = state.devices.map { device ->
-                if (device.deviceId == targetDeviceId) {
-                    when(device) {
-                        is PlugDevice -> {
-                            device.copy(
-                                status = device.status.copy(
-                                    switch = device.reverseSwitch()
-                                )
-                            )
-                        }
-                        is LightDevice -> {
-                            device.copy(
-                                status = device.status.copy(
-                                    switch = ControlField(
-                                        code = device.status.switch.code,
-                                        value = !device.status.switch.value
-                                    )
-                                )
-                            )
-                        }
-                        else -> throw BenchmarkException(ErrorConstants.INVALID_DEVICE)
-                    }
-                } else device
+                _uiState.value = DeviceUiState.Devices(updatedDevices)
             }
-            _uiState.value = DeviceUiState.Devices(updatedDevices)
-            updatedDevices.find { it.deviceId == targetDeviceId }
         }
+        updateDevices()
+
+        deviceRepository.controlDevice(deviceId, controlField)
+            .catch {
+                _errorFlow.emit(it)
+            }
+            .launchIn(viewModelScope)
     }
 }

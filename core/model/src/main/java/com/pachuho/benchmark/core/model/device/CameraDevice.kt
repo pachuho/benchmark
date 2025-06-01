@@ -18,25 +18,16 @@ data class CameraDevice(
     override fun getDirectControlStatus() = this.status.indicator.value
     override fun getControlText() = if (this.status.indicator.value) "카메라 상태등이 켜져있습니다." else "카메라 상태등이 꺼져있습니다."
 
-    fun updateIndicator(): CameraDevice {
-        return this.copy(
-            status = this.status.copy(
-                indicator = ControlField(
-                    code = this.status.indicator.code,
-                    value = !this.status.indicator.value
-                )
-            )
+    fun reverseIndicator(): ControlField<Boolean> {
+        return ControlField(
+            code = this.status.indicator.code,
+            value = !this.status.indicator.value
         )
     }
-
-    fun updatePrivateMode(): CameraDevice {
-        return this.copy(
-            status = this.status.copy(
-                indicator = ControlField(
-                    code = this.status.privateMode.code,
-                    value = !this.status.privateMode.value
-                )
-            )
+    fun reversePrivateMode(): ControlField<Boolean> {
+        return ControlField(
+            code = this.status.privateMode.code,
+            value = !this.status.privateMode.value
         )
     }
 }

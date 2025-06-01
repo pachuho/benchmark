@@ -1,12 +1,6 @@
-package com.pachuho.benchmark.feature.device.detail.component
+package com.pachuho.benchmark.core.model.device
 
-import com.pachuho.benchmark.core.model.device.CameraDevice
-import com.pachuho.benchmark.core.model.device.ControlField
-import com.pachuho.benchmark.core.model.device.Device
-import com.pachuho.benchmark.core.model.device.LightDevice
-import com.pachuho.benchmark.core.model.device.PlugDevice
-
-internal fun <T> getUpdatedDevice(device: Device, controlField: ControlField<T>): Device? {
+fun <T> getUpdatedDevice(device: Device, controlField: ControlField<T>): Device? {
     return when(device) {
         is PlugDevice -> {
             when(controlField.code) {

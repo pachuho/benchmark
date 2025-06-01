@@ -28,6 +28,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.pachuho.benchmark.core.designsystem.theme.BenchmarkTheme
 import com.pachuho.benchmark.core.designsystem.theme.Blue700
+import com.pachuho.benchmark.core.model.device.CameraDevice
 import com.pachuho.benchmark.core.model.device.ControlField
 import com.pachuho.benchmark.core.model.device.Device
 import com.pachuho.benchmark.core.model.device.LightDevice
@@ -42,7 +43,7 @@ internal fun DeviceItem(
     device: Device,
     color: Color = MaterialTheme.colorScheme.background,
     onClickItem: (Device) -> Unit,
-    onClickControl: (Device) -> Unit
+    onControl: (String, ControlField<*>) -> Unit,
 ) {
     val backgroundColor = if (device.online) color else Color.LightGray
     val controlColor = if (device.getDirectControlStatus()) Blue700 else Color.Gray
@@ -91,7 +92,17 @@ internal fun DeviceItem(
                         .size(48.dp)
                         .clickableWithoutEffect(
                             enabled = device.online,
-                        ) { onClickControl(device) },
+                        ) {
+                            onControl(
+                                device.deviceId,
+                                when(device) {
+                                    is PlugDevice -> device.reverseSwitch()
+                                    is LightDevice -> device.reverseSwitch()
+                                    is CameraDevice -> device.reverseIndicator()
+                                    else -> return@clickableWithoutEffect
+                                }
+                            )
+                        },
                     contentAlignment = Alignment.Center
                 ) {
                     Icon(
@@ -135,7 +146,9 @@ private fun DeviceItemPreviewPlug() {
                 )
             ),
             onClickItem = {},
-            onClickControl = {}
+            onControl = { deviceId, controlField ->
+
+            }
         )
     }
 }
@@ -166,7 +179,9 @@ private fun DeviceItemPreviewLight() {
                 )
             ),
             onClickItem = {},
-            onClickControl = {}
+            onControl = { deviceId, controlField ->
+
+            }
         )
     }
 }
