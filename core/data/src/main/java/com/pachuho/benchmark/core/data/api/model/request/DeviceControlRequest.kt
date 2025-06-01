@@ -1,8 +1,6 @@
 package com.pachuho.benchmark.core.data.api.model.request
 
-import com.pachuho.benchmark.core.model.device.Device
-import com.pachuho.benchmark.core.model.device.Light
-import com.pachuho.benchmark.core.model.device.Plug
+import com.pachuho.benchmark.core.model.device.ControlField
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.JsonElement
@@ -14,28 +12,12 @@ data class DeviceControlRequest(
     @SerialName("value") val value: JsonElement
 )
 
-fun Device.extractControlRequest(code: String, value: Any): DeviceControlRequest? {
-    val statusObj: Any = when (this) {
-        is Plug -> this.status
-        is Light -> this.status
-        else -> return null
+fun <T> extractControlRequest(field: ControlField<T>): DeviceControlRequest {
+    val jsonValue = when (val v = field.value) {
+        is Boolean -> JsonPrimitive(v)
+        is Int -> JsonPrimitive(v)
+        is String -> JsonPrimitive(v)
+        else -> throw IllegalArgumentException("지원하지 않는 타입")
     }
-
-    val kClass = statusObj::class
-    val property = kClass.members
-        .firstOrNull { it.name == code }
-        ?: return null
-    val fieldValue = property.call(statusObj)
-
-    val jsonValue: JsonElement = when (value) {
-        is Boolean -> JsonPrimitive(value)
-        is Int -> JsonPrimitive(value)
-        is String -> JsonPrimitive(value)
-        else -> return null
-    }
-
-    return DeviceControlRequest(
-        code = code,
-        value = jsonValue
-    )
+    return DeviceControlRequest(field.code, jsonValue)
 }

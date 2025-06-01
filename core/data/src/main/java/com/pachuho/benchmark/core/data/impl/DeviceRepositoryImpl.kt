@@ -1,8 +1,10 @@
 package com.pachuho.benchmark.core.data.impl
 
 import com.pachuho.benchmark.core.data.api.JHApi
+import com.pachuho.benchmark.core.data.api.model.request.extractControlRequest
 import com.pachuho.benchmark.core.data.mapper.toDomain
 import com.pachuho.benchmark.core.domain.repository.DeviceRepository
+import com.pachuho.benchmark.core.model.device.ControlField
 import com.pachuho.benchmark.core.model.device.Device
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
@@ -19,17 +21,11 @@ internal class DeviceRepositoryImpl @Inject constructor(
         emit(api.getDevice(deviceId).toDomain())
     }
 
-    override fun controlDevice(device: Device): Flow<Unit> = flow {
-//        val response = api.controlDevice(
-//            deviceId = device.deviceId,
-//            listOf(
-//                DeviceControlRequest(
-//                    code = "switch_1",
-//                    value = device.extractControlRequest()
-//                )
-//            )
-//        )
-//
-//        emit(response)
+    override fun<T> controlDevice(deviceId: String, field: ControlField<T>): Flow<Unit> = flow {
+        val response = api.controlDevice(
+            deviceId = deviceId,
+            request = listOf(extractControlRequest(field))
+        )
+        emit(response)
     }
 }
