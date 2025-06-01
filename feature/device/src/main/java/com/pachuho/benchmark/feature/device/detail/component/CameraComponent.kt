@@ -48,6 +48,7 @@ internal fun CameraComponent(
 ) {
     var checkIndicator by remember { mutableStateOf(device.status.indicator.value) }
     var checkPrivateMode by remember { mutableStateOf(device.status.privateMode.value) }
+    var checkMotionDetect by remember { mutableStateOf(device.status.motionDetect.value) }
 
     Column(
         modifier = Modifier.fillMaxSize()
@@ -67,6 +68,15 @@ internal fun CameraComponent(
             onCheckedChange = {
                 checkPrivateMode = it
                 onControl(device.reversePrivateMode())
+            }
+        )
+
+        StatusComponent(
+            id = R.string.motion_detect,
+            checked = checkMotionDetect,
+            onCheckedChange = {
+                checkMotionDetect = it
+                onControl(device.reverseMotionDetect())
             }
         )
     }
@@ -113,11 +123,15 @@ private fun CameraComponentPreview() {
                 online = true,
                 status = CameraStatus(
                     indicator = ControlField(
-                        code = "switch",
+                        code = "",
                         value = true
                     ),
                     privateMode = ControlField(
-                        code = "bright",
+                        code = "",
+                        value = true
+                    ),
+                    motionDetect = ControlField(
+                        code = "",
                         value = true
                     )
                 )

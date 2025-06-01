@@ -1,10 +1,13 @@
 package com.pachuho.benchmark.feature.device
 
+import android.util.Printer
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewModelScope
 import com.pachuho.benchmark.core.domain.error.BenchmarkException
 import com.pachuho.benchmark.core.domain.error.ErrorConstants
 import com.pachuho.benchmark.core.domain.repository.DeviceRepository
+import com.pachuho.benchmark.core.domain.socket.BenchmarkWebSocket
 import com.pachuho.benchmark.core.model.device.CameraDevice
 import com.pachuho.benchmark.core.model.device.ControlField
 import com.pachuho.benchmark.core.model.device.Device
@@ -22,11 +25,14 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.onStart
+import kotlinx.coroutines.launch
+import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
 class DeviceViewModel @Inject constructor(
-    private val deviceRepository: DeviceRepository
+    private val deviceRepository: DeviceRepository,
+    webSocket: BenchmarkWebSocket
 ) : ViewModel() {
     private val _errorFlow = MutableSharedFlow<Throwable>()
     val errorFlow = _errorFlow.asSharedFlow()
@@ -37,8 +43,28 @@ class DeviceViewModel @Inject constructor(
     private val _isRefreshing = MutableStateFlow(false)
     val isRefreshing = _isRefreshing.asStateFlow()
 
+    private val socketMessage = webSocket.messages
+
     init {
         getDevices()
+        consumeSocketMessage()
+    }
+
+    private fun consumeSocketMessage() = viewModelScope.launch {
+        socketMessage.collect { message ->
+            (_uiState.value as? DeviceUiState.Devices)?.let { state ->
+
+                Timber.i("message: $message")
+
+
+//                state.devices.map { device ->
+//                    if (device.deviceId == deviceId) {
+//
+//                    }
+//
+//                }
+            }
+        }
     }
 
     fun getDevices() {

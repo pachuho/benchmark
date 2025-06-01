@@ -4,4 +4,5 @@
     <string name="failure_get_device">기기 조회 실패</string>
     <string name="indicator">상태 표시등</string>
     <string name="private_mode">프라이빗 모드</string>
+    <string name="motion_detect">모션 감지</string>
 </resources>

@@ -2,15 +2,17 @@ package com.pachuho.benchmark.core.data.mapper
 
 import com.pachuho.benchmark.core.data.api.model.response.DeviceResponse
 import com.pachuho.benchmark.core.model.device.BasicDevice
-import com.pachuho.benchmark.core.model.device.CameraStatus
+import com.pachuho.benchmark.core.model.device.BasicStatus
 import com.pachuho.benchmark.core.model.device.CameraDevice
+import com.pachuho.benchmark.core.model.device.CameraStatus
 import com.pachuho.benchmark.core.model.device.Device
 import com.pachuho.benchmark.core.model.device.LightDevice
 import com.pachuho.benchmark.core.model.device.LightStatus
 import com.pachuho.benchmark.core.model.device.PlugDevice
 import com.pachuho.benchmark.core.model.device.PlugStatus
-import com.pachuho.benchmark.core.model.device.BasicStatus
+import com.pachuho.benchmark.core.model.device.SocketMessage
 import com.pachuho.benchmark.core.model.device.StatusType
+import kotlinx.serialization.json.Json
 
 internal fun DeviceResponse.toDomain(): Device {
     return when (StatusType.from(productId)) {

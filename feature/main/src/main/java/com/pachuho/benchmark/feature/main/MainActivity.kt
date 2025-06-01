@@ -23,7 +23,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.pachuho.benchmark.core.designsystem.theme.BenchmarkTheme
 import com.pachuho.benchmark.core.domain.error.BenchmarkException
 import com.pachuho.benchmark.core.domain.error.ErrorMapper
@@ -31,7 +30,6 @@ import com.pachuho.benchmark.core.eventbus.EventBus
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
-import timber.log.Timber
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -72,10 +70,6 @@ class MainActivity : ComponentActivity() {
             }
 
             LaunchedEffect(Unit) {
-                viewModel.messages.collect { msg ->
-                    Timber.d("message: $msg")
-                }
-
                 eventBus.eventFlow.collect { event ->
                     when(event) {
                         is EventBus.Event.Logout -> navigator.navigateLogin(true)

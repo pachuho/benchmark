@@ -61,7 +61,11 @@ internal class DeviceDetailPreviewParameterProvider : PreviewParameterProvider<D
                     privateMode = ControlField(
                         code = "bright",
                         value = true
-                    )
+                    ),
+                    motionDetect = ControlField(
+                        code = "bright",
+                        value = true
+                    ),
                 )
             )
         )

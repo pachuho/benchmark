@@ -30,18 +30,26 @@ data class CameraDevice(
             value = !this.status.privateMode.value
         )
     }
+    fun reverseMotionDetect(): ControlField<Boolean> {
+        return ControlField(
+            code = this.status.motionDetect.code,
+            value = !this.status.motionDetect.value
+        )
+    }
 }
 
 @Serializable
 data class CameraStatus(
     val indicator: ControlField<Boolean>,
     val privateMode: ControlField<Boolean>,
+    val motionDetect: ControlField<Boolean>,
 ) {
     companion object {
         fun fromJsonObj(obj: JsonObject): CameraStatus {
             return CameraStatus(
                 indicator = ControlField("indicator", obj["indicator"]?.jsonPrimitive?.boolean ?: false),
                 privateMode = ControlField("privateMode", obj["privateMode"]?.jsonPrimitive?.boolean ?: false),
+                motionDetect = ControlField("motionDetect", obj["motionDetect"]?.jsonPrimitive?.boolean ?: false),
             )
         }
     }

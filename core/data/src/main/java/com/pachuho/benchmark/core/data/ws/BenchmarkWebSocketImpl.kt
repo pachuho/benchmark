@@ -9,7 +9,6 @@ import okhttp3.Request
 import okhttp3.Response
 import okhttp3.WebSocket
 import okhttp3.WebSocketListener
-import okio.ByteString
 import javax.inject.Inject
 
 class BenchmarkWebSocketImpl @Inject constructor(
@@ -25,9 +24,6 @@ class BenchmarkWebSocketImpl @Inject constructor(
         webSocket = client.newWebSocket(request, object : WebSocketListener() {
             override fun onMessage(webSocket: WebSocket, text: String) {
                 _messageChannel.trySend(text)
-            }
-            override fun onMessage(webSocket: WebSocket, bytes: ByteString) {
-                _messageChannel.trySend(bytes.utf8())
             }
             override fun onClosed(webSocket: WebSocket, code: Int, reason: String) {
                 _messageChannel.close()

@@ -11,8 +11,6 @@ import javax.inject.Inject
 class MainViewModel @Inject constructor(
     private val webSocket: BenchmarkWebSocket
 ): ViewModel() {
-    val messages = webSocket.messages
-
     fun startWebSocket() {
         webSocket.connect(BuildConfig.WS_BASE_URL)
     }
