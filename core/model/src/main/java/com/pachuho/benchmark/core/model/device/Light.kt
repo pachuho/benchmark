@@ -15,7 +15,10 @@ data class Light(
     override val productId: String,
     override val online: Boolean,
     override val status: LightStatus
-) : Device
+) : Device {
+    override fun getDirectControlStatus() = this.status.switch.value
+    override fun getControlText() = if (this.status.switch.value) "무드등이 켜져있습니다." else "무드등이 꺼져있습니다."
+}
 
 @Serializable
 data class LightStatus(

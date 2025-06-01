@@ -33,6 +33,7 @@ import com.pachuho.benchmark.core.designsystem.component.TopAppBarNavigationType
 import com.pachuho.benchmark.core.designsystem.theme.BenchmarkTheme
 import com.pachuho.benchmark.core.designsystem.theme.Blue050
 import com.pachuho.benchmark.core.designsystem.theme.Blue700
+import com.pachuho.benchmark.core.model.device.BasicDevice
 import com.pachuho.benchmark.core.model.device.Device
 import com.pachuho.benchmark.core.model.device.Light
 import com.pachuho.benchmark.core.model.device.Plug
@@ -78,15 +79,6 @@ private fun DeviceDetailScreen(
             is DeviceDetailUiState.Device -> {
                 val device = uiState.device
                 val controlColor = if (device.getDirectControlStatus()) Blue700 else Color.Gray
-                val text = when(device) {
-                    is Plug -> {
-                        if (device.status.switch.value) "플러그가 켜져있습니다." else "플러그가 꺼져있습니다."
-                    }
-                    is Light -> {
-                        if (device.status.switch.value) "무드등이 켜져있습니다." else "무드등이 꺼져있습니다."
-                    }
-                    else -> "유효하지 않은 상태 값"
-                }
 
                 BenchmarkTopAppBar(
                     modifier = Modifier.align(Alignment.TopCenter),
@@ -119,13 +111,20 @@ private fun DeviceDetailScreen(
                         )
 
                         Text(
-                            text = text,
+                            text = device.getControlText(),
                             style = BenchmarkTheme.typography.titleMediumR,
                         )
                     }
                 }
             }
             DeviceDetailUiState.Error -> {
+                BenchmarkTopAppBar(
+                    modifier = Modifier.align(Alignment.TopCenter),
+                    title = "Device",
+                    navigationType = TopAppBarNavigationType.Back,
+                    onNavigationClick = onBack
+                )
+
                 Column(
                     modifier = Modifier.fillMaxSize(),
                     verticalArrangement = Arrangement.Center,

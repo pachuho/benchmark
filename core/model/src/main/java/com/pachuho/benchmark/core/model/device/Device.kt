@@ -11,13 +11,8 @@ interface Device {
     val online: Boolean
     val status: Any
 
-    fun getDirectControlStatus(): Boolean {
-        return when(this) {
-            is Plug -> this.status.switch.value
-            is Light -> this.status.switch.value
-            else -> false
-        }
-    }
+    fun getDirectControlStatus(): Boolean
+    fun getControlText(): String
 }
 
 enum class StatusType(val productId: String) {

@@ -14,7 +14,10 @@ data class Plug(
     override val productId: String,
     override val online: Boolean,
     override val status: PlugStatus
-) : Device
+) : Device {
+    override fun getDirectControlStatus() = this.status.switch.value
+    override fun getControlText() = if (this.status.switch.value) "플러그가 켜져있습니다." else "플러그가 꺼져있습니다."
+}
 
 @Serializable
 data class PlugStatus(
