@@ -67,6 +67,17 @@ fun <T> getUpdatedDevice(device: Device, controlField: ControlField<T>): Device?
                     )
                 }
 
+                device.status.motionDetect.code -> {
+                    device.copy(
+                        status = device.status.copy(
+                            motionDetect = ControlField(
+                                code = controlField.code,
+                                value = controlField.value as Boolean
+                            )
+                        )
+                    )
+                }
+
                 // TODO
                 else -> null
             }
