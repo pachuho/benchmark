@@ -17,7 +17,7 @@ internal class DeviceRepositoryImpl @Inject constructor(
         emit(api.getDevices().toDomain())
     }
 
-    override fun getDevice(deviceId: String): Flow<Device?> = flow {
+    override fun getDevice(deviceId: String): Flow<Device> = flow {
         emit(api.getDevice(deviceId).toDomain())
     }
 

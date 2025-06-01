@@ -4,6 +4,7 @@ import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.Stable
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.pachuho.benchmark.core.domain.error.BenchmarkException
 import com.pachuho.benchmark.core.domain.error.ErrorConstants
 import com.pachuho.benchmark.core.domain.repository.DeviceRepository
@@ -12,6 +13,9 @@ import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import javax.inject.Inject
 
 @HiltViewModel
@@ -37,13 +41,13 @@ class DeviceDetailViewModel @Inject constructor(
     }
 
     private fun getDevice(deviceId: String) {
-//        deviceRepository.getDevice(deviceId)
-//            .onEach { _uiState.value = DeviceDetailUiState.Device(it) }
-//            .catch {
-//                _uiState.value = DeviceDetailUiState.Error
-//                _errorFlow.emit(it)
-//            }
-//            .launchIn(viewModelScope)
+        deviceRepository.getDevice(deviceId)
+            .onEach { _uiState.value = DeviceDetailUiState.Device(it) }
+            .catch {
+                _uiState.value = DeviceDetailUiState.Error
+                _errorFlow.emit(it)
+            }
+            .launchIn(viewModelScope)
     }
 
     fun toggleDevice() {

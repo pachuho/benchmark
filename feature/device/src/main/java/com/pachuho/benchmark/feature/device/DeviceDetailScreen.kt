@@ -34,6 +34,8 @@ import com.pachuho.benchmark.core.designsystem.theme.BenchmarkTheme
 import com.pachuho.benchmark.core.designsystem.theme.Blue050
 import com.pachuho.benchmark.core.designsystem.theme.Blue700
 import com.pachuho.benchmark.core.model.device.Device
+import com.pachuho.benchmark.core.model.device.Light
+import com.pachuho.benchmark.core.model.device.Plug
 import com.pachuho.benchmark.core.ui.DevicePreviews
 import com.pachuho.benchmark.core.ui.clickableWithoutEffect
 import kotlinx.coroutines.flow.collectLatest
@@ -72,20 +74,26 @@ private fun DeviceDetailScreen(
             .background(Blue050)
             .padding(padding)
     ) {
-        BenchmarkTopAppBar(
-            modifier = Modifier.align(Alignment.TopCenter),
-            title = "플러그 Mini",
-            navigationType = TopAppBarNavigationType.Back,
-            onNavigationClick = onBack
-        )
-
         when(uiState) {
             is DeviceDetailUiState.Device -> {
-                // TODO
-                val controlColor = Blue700
-//                val controlColor = if (uiState.device.status.switch) Blue700 else Color.Gray
-                val text = "플러그가 켜져있습니다."
-//                val text = if (uiState.device.status.switch) "플러그가 켜져있습니다." else "플러그가 꺼져있습니다."
+                val device = uiState.device
+                val controlColor = if (device.getDirectControlStatus()) Blue700 else Color.Gray
+                val text = when(device) {
+                    is Plug -> {
+                        if (device.status.switch.value) "플러그가 켜져있습니다." else "플러그가 꺼져있습니다."
+                    }
+                    is Light -> {
+                        if (device.status.switch.value) "무드등이 켜져있습니다." else "무드등이 꺼져있습니다."
+                    }
+                    else -> "유효하지 않은 상태 값"
+                }
+
+                BenchmarkTopAppBar(
+                    modifier = Modifier.align(Alignment.TopCenter),
+                    title = device.name,
+                    navigationType = TopAppBarNavigationType.Back,
+                    onNavigationClick = onBack
+                )
 
                 BoxWithConstraints(
                     modifier = Modifier

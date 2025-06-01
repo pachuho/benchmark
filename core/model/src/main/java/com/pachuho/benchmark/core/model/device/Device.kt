@@ -22,11 +22,12 @@ interface Device {
 
 enum class StatusType(val productId: String) {
     Plug("uxjr57hvapakd0io"),
-    Light("mhf0rqd7uuvz6hf8");
+    Light("mhf0rqd7uuvz6hf8"),
+    Basic("1");
 
     companion object {
-        fun from(productId: String): StatusType? =
-            entries.find { it.productId == productId }
+        fun from(productId: String): StatusType =
+            entries.find { it.productId == productId } ?: Basic
     }
 }
 
