@@ -1,0 +1,44 @@
+package com.pachuho.benchmark.core.data.ws
+
+import com.pachuho.benchmark.core.domain.socket.BenchmarkWebSocket
+import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.receiveAsFlow
+import okhttp3.OkHttpClient
+import okhttp3.Request
+import okhttp3.Response
+import okhttp3.WebSocket
+import okhttp3.WebSocketListener
+import okio.ByteString
+import javax.inject.Inject
+
+class BenchmarkWebSocketImpl @Inject constructor(
+    private val client: OkHttpClient
+) : BenchmarkWebSocket {
+
+    private var webSocket: WebSocket? = null
+    private val _messageChannel = Channel<String>(Channel.BUFFERED)
+    override val messages: Flow<String> get() = _messageChannel.receiveAsFlow()
+
+    override fun connect(url: String) {
+        val request = Request.Builder().url(url).build()
+        webSocket = client.newWebSocket(request, object : WebSocketListener() {
+            override fun onMessage(webSocket: WebSocket, text: String) {
+                _messageChannel.trySend(text)
+            }
+            override fun onMessage(webSocket: WebSocket, bytes: ByteString) {
+                _messageChannel.trySend(bytes.utf8())
+            }
+            override fun onClosed(webSocket: WebSocket, code: Int, reason: String) {
+                _messageChannel.close()
+            }
+            override fun onFailure(webSocket: WebSocket, t: Throwable, response: Response?) {
+                _messageChannel.close(t)
+            }
+        })
+    }
+    override fun disconnect() {
+        webSocket?.close(1000, null)
+        webSocket = null
+    }
+}

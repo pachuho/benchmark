@@ -6,6 +6,8 @@ import com.pachuho.benchmark.core.data.api.JHApi
 import com.pachuho.benchmark.core.data.auth.TokenAuthenticator
 import com.pachuho.benchmark.core.data.interceptor.AuthInterceptor
 import com.pachuho.benchmark.core.data.interceptor.LoggerInterceptor
+import com.pachuho.benchmark.core.data.ws.BenchmarkWebSocketImpl
+import com.pachuho.benchmark.core.domain.socket.BenchmarkWebSocket
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -59,4 +61,10 @@ internal object ApiModule {
         ignoreUnknownKeys = true
         coerceInputValues = true
     }
+
+    @Provides
+    @Singleton
+    fun provideWebSocketDataSource(
+        client: OkHttpClient
+    ): BenchmarkWebSocket = BenchmarkWebSocketImpl(client)
 }

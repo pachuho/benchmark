@@ -6,6 +6,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.BackHandler
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.activity.viewModels
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
@@ -21,6 +22,8 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.pachuho.benchmark.core.designsystem.theme.BenchmarkTheme
 import com.pachuho.benchmark.core.domain.error.BenchmarkException
 import com.pachuho.benchmark.core.domain.error.ErrorMapper
@@ -28,18 +31,32 @@ import com.pachuho.benchmark.core.eventbus.EventBus
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
+import timber.log.Timber
 import javax.inject.Inject
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     @Inject
     lateinit var eventBus: EventBus
+    private val viewModel: MainViewModel by viewModels()
+
+    override fun onResume() {
+        super.onResume()
+        viewModel.startWebSocket()
+    }
+
+    override fun onStop() {
+        super.onStop()
+        viewModel.stopWebSocket()
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
 
         setContent {
+            val viewModel: MainViewModel = hiltViewModel()
+
             val navigator: MainNavigator = rememberMainNavigator()
             val coroutineScope = rememberCoroutineScope()
             val localContextResource = LocalContext.current.resources
@@ -55,6 +72,10 @@ class MainActivity : ComponentActivity() {
             }
 
             LaunchedEffect(Unit) {
+                viewModel.messages.collect { msg ->
+                    Timber.d("message: $msg")
+                }
+
                 eventBus.eventFlow.collect { event ->
                     when(event) {
                         is EventBus.Event.Logout -> navigator.navigateLogin(true)

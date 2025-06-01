@@ -24,6 +24,12 @@ android {
             "API_BASE_URL",
             "\"${localProperties["API_BASE_URL"]}\""
         )
+
+        buildConfigField(
+            "String",
+            "WS_BASE_URL",
+            "\"${localProperties["WS_BASE_URL"]}\""
+        )
     }
 }
 
@@ -33,6 +39,7 @@ dependencies {
     implementation(projects.core.datastore)
     implementation(projects.core.eventbus)
 
+    implementation(libs.okhttp)
     implementation(libs.retrofit.core)
     implementation(libs.retrofit.kotlin.serialization)
     implementation(libs.okhttp.logging)
