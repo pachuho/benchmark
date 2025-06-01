@@ -5,7 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.pachuho.benchmark.core.domain.error.BenchmarkException
 import com.pachuho.benchmark.core.domain.error.ErrorConstants
 import com.pachuho.benchmark.core.domain.repository.DeviceRepository
-import com.pachuho.benchmark.core.model.Device
+import com.pachuho.benchmark.core.model.device.Device
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow

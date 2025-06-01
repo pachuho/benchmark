@@ -3,7 +3,7 @@ package com.pachuho.benchmark.core.data.impl
 import com.pachuho.benchmark.core.data.api.JHApi
 import com.pachuho.benchmark.core.data.mapper.toDomain
 import com.pachuho.benchmark.core.domain.repository.DeviceRepository
-import com.pachuho.benchmark.core.model.Device
+import com.pachuho.benchmark.core.model.device.Device
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import javax.inject.Inject

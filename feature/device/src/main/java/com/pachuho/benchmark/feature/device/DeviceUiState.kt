@@ -2,7 +2,7 @@ package com.pachuho.benchmark.feature.device
 
 import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.Stable
-import com.pachuho.benchmark.core.model.Device
+import com.pachuho.benchmark.core.model.device.Device
 
 @Stable
 sealed interface DeviceUiState {

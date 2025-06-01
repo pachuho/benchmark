@@ -1,6 +1,12 @@
+import com.pachuho.benchmark.setNamespace
+
 plugins {
-    id("benchmark.kotlin.library")
+    id("benchmark.android.library")
     id("kotlinx-serialization")
+}
+
+android {
+    setNamespace("core.model")
 }
 
 dependencies {

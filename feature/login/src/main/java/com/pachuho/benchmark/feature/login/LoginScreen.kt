@@ -77,8 +77,10 @@ private fun LoginScreen(
     onLogin: (String, String) -> Unit
 ) {
     // TODO
-    var id by remember { mutableStateOf("jh1@jh.com") }
-    var password by remember { mutableStateOf("jh1234!") }
+//    var id by remember { mutableStateOf("jh1@jh.com") }
+//    var password by remember { mutableStateOf("jh1234!") }
+    var id by remember { mutableStateOf("82-00001028088912") }
+    var password by remember { mutableStateOf("password") }
     val keyboardController = LocalSoftwareKeyboardController.current
 
     if (uiState is LoginUiState.Loading) {

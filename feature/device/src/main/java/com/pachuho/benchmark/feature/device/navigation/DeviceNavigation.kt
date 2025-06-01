@@ -7,7 +7,7 @@ import androidx.navigation.NavOptions
 import androidx.navigation.NavType
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
-import com.pachuho.benchmark.core.model.Device
+import com.pachuho.benchmark.core.model.device.Device
 import com.pachuho.benchmark.core.navigation.Route
 import com.pachuho.benchmark.core.navigation.composableWithAnimation
 import com.pachuho.benchmark.feature.device.PlugDetailRoute

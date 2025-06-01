@@ -28,12 +28,12 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.pachuho.benchmark.core.designsystem.theme.BenchmarkTheme
 import com.pachuho.benchmark.core.designsystem.theme.Blue700
-import com.pachuho.benchmark.core.model.ControlField
-import com.pachuho.benchmark.core.model.Device
-import com.pachuho.benchmark.core.model.Light
-import com.pachuho.benchmark.core.model.LightStatus
-import com.pachuho.benchmark.core.model.Plug
-import com.pachuho.benchmark.core.model.PlugStatus
+import com.pachuho.benchmark.core.model.device.ControlField
+import com.pachuho.benchmark.core.model.device.Device
+import com.pachuho.benchmark.core.model.device.Light
+import com.pachuho.benchmark.core.model.device.LightStatus
+import com.pachuho.benchmark.core.model.device.Plug
+import com.pachuho.benchmark.core.model.device.PlugStatus
 import com.pachuho.benchmark.core.ui.clickableWithoutEffect
 
 @Composable
@@ -80,7 +80,7 @@ internal fun DeviceItem(
                     modifier = Modifier
                         .align(Alignment.TopStart)
                         .size(width.div(4)),
-                    painter = painterResource(R.drawable.ic_plug),
+                    painter = painterResource(device.icon),
                     contentDescription = null,
                     tint = Color.Unspecified
                 )
@@ -109,7 +109,7 @@ internal fun DeviceItem(
                     modifier = Modifier
                         .align(Alignment.CenterStart)
                         .padding(top = 20.dp),
-                    text = device.getName(),
+                    text = device.name,
                     style = BenchmarkTheme.typography.labelMediumR,
                 )
             }
@@ -123,6 +123,7 @@ private fun DeviceItemPreviewPlug() {
     BenchmarkTheme {
         DeviceItem(
             device = Plug(
+                name = "플러그",
                 deviceId = "1",
                 productId = "2",
                 online = true,
@@ -145,13 +146,22 @@ private fun DeviceItemPreviewLight() {
     BenchmarkTheme {
         DeviceItem(
             device = Light(
+                name = "무드등",
                 deviceId = "2",
                 productId = "2",
                 online = true,
                 status = LightStatus(
-                    ControlField(
-                        code = "switch_led",
+                    switch = ControlField(
+                        code = "switchLed",
                         value = true
+                    ),
+                    bright = ControlField(
+                        code = "brightValue",
+                        value = 1
+                    ),
+                    mode = ControlField(
+                        code = "workMode",
+                        value = "white"
                     )
                 )
             ),

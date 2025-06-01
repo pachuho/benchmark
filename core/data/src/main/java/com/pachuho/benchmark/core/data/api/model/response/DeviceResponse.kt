@@ -6,6 +6,7 @@ import kotlinx.serialization.json.JsonObject
 
 @Serializable
 data class DeviceResponse(
+    @SerialName("name") val name: String,
     @SerialName("deviceId") val deviceId: String,
     @SerialName("productId") val productId: String,
     @SerialName("online") val online: Boolean,

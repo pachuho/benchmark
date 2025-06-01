@@ -1,9 +1,8 @@
 package com.pachuho.benchmark.core.data.api.model.request
 
-import com.pachuho.benchmark.core.model.ControlField
-import com.pachuho.benchmark.core.model.Device
-import com.pachuho.benchmark.core.model.Light
-import com.pachuho.benchmark.core.model.Plug
+import com.pachuho.benchmark.core.model.device.Device
+import com.pachuho.benchmark.core.model.device.Light
+import com.pachuho.benchmark.core.model.device.Plug
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.JsonElement
@@ -16,23 +15,27 @@ data class DeviceControlRequest(
 )
 
 fun Device.extractControlRequest(code: String, value: Any): DeviceControlRequest? {
-    val controlFieldMap: Map<String, ControlField<*>> = when (this) {
-        is Plug -> mapOf(this.status.switch.code to this.status.switch)
-        is Light -> mapOf(
-            this.status.switchLed.code to this.status.switchLed,
-            this.status.brightValue.code to this.status.brightValue,
-            this.status.workMode.code to this.status.workMode
-        )
-        else -> emptyMap()
+    val statusObj: Any = when (this) {
+        is Plug -> this.status
+        is Light -> this.status
+        else -> return null
     }
-    val field = controlFieldMap[code] ?: return null
 
-    val jsonValue = when (value) {
+    val kClass = statusObj::class
+    val property = kClass.members
+        .firstOrNull { it.name == code }
+        ?: return null
+    val fieldValue = property.call(statusObj)
+
+    val jsonValue: JsonElement = when (value) {
         is Boolean -> JsonPrimitive(value)
         is Int -> JsonPrimitive(value)
         is String -> JsonPrimitive(value)
-        else -> return null // 필요시 Double, Long 등도 추가
+        else -> return null
     }
 
-    return DeviceControlRequest(code = code, value = jsonValue)
+    return DeviceControlRequest(
+        code = code,
+        value = jsonValue
+    )
 }

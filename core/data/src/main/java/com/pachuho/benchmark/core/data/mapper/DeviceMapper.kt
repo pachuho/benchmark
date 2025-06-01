@@ -1,30 +1,31 @@
 package com.pachuho.benchmark.core.data.mapper
 
 import com.pachuho.benchmark.core.data.api.model.response.DeviceResponse
-import com.pachuho.benchmark.core.model.Device
-import com.pachuho.benchmark.core.model.Light
-import com.pachuho.benchmark.core.model.LightStatus
-import com.pachuho.benchmark.core.model.Plug
-import com.pachuho.benchmark.core.model.PlugStatus
-import com.pachuho.benchmark.core.model.StatusType
-import kotlinx.serialization.json.Json
+import com.pachuho.benchmark.core.model.device.Device
+import com.pachuho.benchmark.core.model.device.Light
+import com.pachuho.benchmark.core.model.device.LightStatus
+import com.pachuho.benchmark.core.model.device.Plug
+import com.pachuho.benchmark.core.model.device.PlugStatus
+import com.pachuho.benchmark.core.model.device.StatusType
 
 internal fun DeviceResponse.toDomain(): Device? {
     return when (StatusType.from(productId)) {
         StatusType.Plug -> runCatching {
             Plug(
+                name = name,
                 deviceId = deviceId,
                 productId = productId,
                 online = online,
-                status = Json.decodeFromJsonElement(PlugStatus.serializer(), status)
+                status = PlugStatus.fromJsonObj(status)
             )
         }.getOrNull()
         StatusType.Light -> runCatching {
             Light(
+                name = name,
                 deviceId = deviceId,
                 productId = productId,
                 online = online,
-                status = Json.decodeFromJsonElement(LightStatus.serializer(), status)
+                status = LightStatus.fromJsonObj(status)
             )
         }.getOrNull()
         null -> null
