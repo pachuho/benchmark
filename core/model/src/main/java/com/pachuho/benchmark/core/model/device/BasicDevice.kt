@@ -17,6 +17,13 @@ data class BasicDevice(
 ) : Device {
     override fun getDirectControlStatus() = this.status.switch.value
     override fun getControlText() = if (this.status.switch.value) "기기가 켜져있습니다." else "기기가 꺼져있습니다."
+
+    fun reverseSwitch(): ControlField<Boolean> {
+        return ControlField(
+            code = this.status.switch.code,
+            value = !this.status.switch.value
+        )
+    }
 }
 
 @Serializable

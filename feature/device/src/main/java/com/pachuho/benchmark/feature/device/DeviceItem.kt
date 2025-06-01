@@ -28,6 +28,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.pachuho.benchmark.core.designsystem.theme.BenchmarkTheme
 import com.pachuho.benchmark.core.designsystem.theme.Blue700
+import com.pachuho.benchmark.core.model.device.BasicDevice
 import com.pachuho.benchmark.core.model.device.CameraDevice
 import com.pachuho.benchmark.core.model.device.ControlField
 import com.pachuho.benchmark.core.model.device.Device
@@ -99,6 +100,7 @@ internal fun DeviceItem(
                                     is PlugDevice -> device.reverseSwitch()
                                     is LightDevice -> device.reverseSwitch()
                                     is CameraDevice -> device.reverseIndicator()
+                                    is BasicDevice -> device.reverseSwitch()
                                     else -> return@clickableWithoutEffect
                                 }
                             )

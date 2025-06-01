@@ -55,8 +55,6 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
 
         setContent {
-            val viewModel: MainViewModel = hiltViewModel()
-
             val navigator: MainNavigator = rememberMainNavigator()
             val coroutineScope = rememberCoroutineScope()
             val localContextResource = LocalContext.current.resources
@@ -69,14 +67,6 @@ class MainActivity : ComponentActivity() {
                         localContextResource.getString(ErrorMapper.fromThrowable(throwable))
                     )
                 }
-            }
-
-            // TODO Remove
-            val messages = viewModel.socketMessage.collectAsStateWithLifecycle("", this)
-
-            LaunchedEffect(messages) {
-                // messages가 바뀔 때마다 이 블록이 재실행
-                Timber.e("message: $messages")
             }
 
             LaunchedEffect(Unit) {

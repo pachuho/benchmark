@@ -29,12 +29,14 @@ import com.pachuho.benchmark.core.designsystem.component.TopAppBarNavigationType
 import com.pachuho.benchmark.core.designsystem.theme.BenchmarkTheme
 import com.pachuho.benchmark.core.designsystem.theme.Blue050
 import com.pachuho.benchmark.core.designsystem.theme.Blue700
+import com.pachuho.benchmark.core.model.device.BasicDevice
 import com.pachuho.benchmark.core.model.device.CameraDevice
 import com.pachuho.benchmark.core.model.device.ControlField
 import com.pachuho.benchmark.core.model.device.Device
 import com.pachuho.benchmark.core.model.device.LightDevice
 import com.pachuho.benchmark.core.model.device.PlugDevice
 import com.pachuho.benchmark.feature.device.R
+import com.pachuho.benchmark.feature.device.detail.component.BasicComponent
 import com.pachuho.benchmark.feature.device.detail.component.CameraComponent
 import com.pachuho.benchmark.feature.device.detail.component.LightComponent
 import com.pachuho.benchmark.feature.device.detail.component.PlugComponent
@@ -89,6 +91,7 @@ private fun DeviceDetailScreen(
                     is PlugDevice -> PlugComponent(device, onControl)
                     is LightDevice -> LightComponent(device, onControl)
                     is CameraDevice -> CameraComponent(device, onControl)
+                    is BasicDevice -> BasicComponent(device, onControl)
                 }
             }
             DeviceDetailUiState.Error -> {

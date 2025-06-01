@@ -83,6 +83,23 @@ fun <T> getUpdatedDevice(device: Device, controlField: ControlField<T>): Device?
             }
         }
 
+        is BasicDevice -> {
+            when(controlField.code) {
+                device.status.switch.code -> {
+                    device.copy(
+                        status = device.status.copy(
+                            switch = ControlField(
+                                code = controlField.code,
+                                value = controlField.value as Boolean
+                            )
+                        )
+                    )
+                }
+
+                else -> null
+            }
+        }
+
         // TODO
         else -> null
     }
