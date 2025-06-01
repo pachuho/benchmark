@@ -101,7 +101,7 @@ private fun DeviceDetailScreen(
                     contentAlignment = Alignment.Center
                 ) {
                     val minSide = minOf(maxWidth, maxHeight)
-                    val iconSize = minSide / 2
+                    val iconSize = minSide / 3
 
                     Column(
                         verticalArrangement = Arrangement.spacedBy(32.dp),

@@ -8,6 +8,10 @@ import androidx.lifecycle.viewModelScope
 import com.pachuho.benchmark.core.domain.error.BenchmarkException
 import com.pachuho.benchmark.core.domain.error.ErrorConstants
 import com.pachuho.benchmark.core.domain.repository.DeviceRepository
+import com.pachuho.benchmark.core.model.device.ControlField
+import com.pachuho.benchmark.core.model.device.Device
+import com.pachuho.benchmark.core.model.device.Light
+import com.pachuho.benchmark.core.model.device.Plug
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -51,23 +55,51 @@ class DeviceDetailViewModel @Inject constructor(
     }
 
     fun toggleDevice() {
-//        (_uiState.value as? DeviceDetailUiState.Device)?.let { state ->
-//            updateDevice(state.device).let { device ->
-//                deviceRepository.controlDevice(device)
-//                    .catch {
-//                        _errorFlow.emit(it)
-//                        DeviceDetailUiState.Device(updateDevice(device))
-//                    }
-//                    .launchIn(viewModelScope)
-//            }
-//        }
+        (_uiState.value as? DeviceDetailUiState.Device)?.let { state ->
+            updateDevice(state.device).let { device ->
+                val field = when(device) {
+                    is Plug -> device.status.switch
+                    is Light -> device.status.switch
+                    else -> throw BenchmarkException(ErrorConstants.INVALID_DEVICE)
+                }
+
+                deviceRepository.controlDevice(device.deviceId, field)
+                    .catch {
+                        _errorFlow.emit(it)
+                        DeviceDetailUiState.Device(updateDevice(device))
+                    }
+                    .launchIn(viewModelScope)
+            }
+        }
     }
 
-//    private fun updateDevice(device: Device): Device {
-//        return device.copy(status = device.status.copy(switch = !device.status.switch)).apply {
-//            _uiState.value = DeviceDetailUiState.Device(this)
-//        }
-//    }
+    private fun updateDevice(device: Device): Device {
+        return when(device) {
+            is Plug -> {
+                device.copy(
+                    status = device.status.copy(
+                        switch = ControlField(
+                            code = device.status.switch.code,
+                            value = !device.status.switch.value
+                        )
+                    )
+                )
+            }
+            is Light -> {
+                device.copy(
+                    status = device.status.copy(
+                        switch = ControlField(
+                            code = device.status.switch.code,
+                            value = !device.status.switch.value
+                        )
+                    )
+                )
+            }
+            else -> throw BenchmarkException(ErrorConstants.INVALID_DEVICE)
+        }.apply {
+            _uiState.value = DeviceDetailUiState.Device(this)
+        }
+    }
 }
 
 @Stable
