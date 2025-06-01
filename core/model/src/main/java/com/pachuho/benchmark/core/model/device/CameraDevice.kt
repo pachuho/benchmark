@@ -7,7 +7,7 @@ import kotlinx.serialization.json.boolean
 import kotlinx.serialization.json.jsonPrimitive
 
 @Serializable
-data class DeviceCamera(
+data class CameraDevice(
     override val name: String,
     override val icon: Int = R.drawable.ic_camera,
     override val deviceId: String,

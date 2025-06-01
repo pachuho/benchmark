@@ -1,20 +1,20 @@
 package com.pachuho.benchmark.core.data.mapper
 
 import com.pachuho.benchmark.core.data.api.model.response.DeviceResponse
-import com.pachuho.benchmark.core.model.device.BasicDevice
+import com.pachuho.benchmark.core.model.device.DeviceBasic
 import com.pachuho.benchmark.core.model.device.CameraStatus
-import com.pachuho.benchmark.core.model.device.DeviceCamera
+import com.pachuho.benchmark.core.model.device.CameraDevice
 import com.pachuho.benchmark.core.model.device.Device
-import com.pachuho.benchmark.core.model.device.Light
+import com.pachuho.benchmark.core.model.device.LightDevice
 import com.pachuho.benchmark.core.model.device.LightStatus
-import com.pachuho.benchmark.core.model.device.Plug
+import com.pachuho.benchmark.core.model.device.PlugDevice
 import com.pachuho.benchmark.core.model.device.PlugStatus
-import com.pachuho.benchmark.core.model.device.StatusBasic
+import com.pachuho.benchmark.core.model.device.BasicStatus
 import com.pachuho.benchmark.core.model.device.StatusType
 
 internal fun DeviceResponse.toDomain(): Device {
     return when (StatusType.from(productId)) {
-        StatusType.Plug -> Plug(
+        StatusType.Plug -> PlugDevice(
             name = name,
             deviceId = deviceId,
             productId = productId,
@@ -22,7 +22,7 @@ internal fun DeviceResponse.toDomain(): Device {
             status = PlugStatus.fromJsonObj(status)
         )
 
-        StatusType.Light -> Light(
+        StatusType.Light -> LightDevice(
             name = name,
             deviceId = deviceId,
             productId = productId,
@@ -30,7 +30,7 @@ internal fun DeviceResponse.toDomain(): Device {
             status = LightStatus.fromJsonObj(status)
         )
 
-        StatusType.Camera -> DeviceCamera(
+        StatusType.Camera -> CameraDevice(
             name = name,
             deviceId = deviceId,
             productId = productId,
@@ -38,12 +38,12 @@ internal fun DeviceResponse.toDomain(): Device {
             status = CameraStatus.fromJsonObj(status)
         )
 
-        StatusType.Basic -> BasicDevice(
+        StatusType.Basic -> DeviceBasic(
             name = name,
             deviceId = deviceId,
             productId = productId,
             online = online,
-            status = StatusBasic.fromJsonObj(status)
+            status = BasicStatus.fromJsonObj(status)
         )
     }
 }

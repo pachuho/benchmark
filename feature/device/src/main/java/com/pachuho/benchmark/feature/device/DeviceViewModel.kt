@@ -7,8 +7,8 @@ import com.pachuho.benchmark.core.domain.error.ErrorConstants
 import com.pachuho.benchmark.core.domain.repository.DeviceRepository
 import com.pachuho.benchmark.core.model.device.ControlField
 import com.pachuho.benchmark.core.model.device.Device
-import com.pachuho.benchmark.core.model.device.Light
-import com.pachuho.benchmark.core.model.device.Plug
+import com.pachuho.benchmark.core.model.device.LightDevice
+import com.pachuho.benchmark.core.model.device.PlugDevice
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -53,8 +53,8 @@ class DeviceViewModel @Inject constructor(
     fun toggleDevice(targetDevice: Device) {
         updateDevice(targetDevice)?.let { device ->
             val field = when(device) {
-                is Plug -> device.status.switch
-                is Light -> device.status.switch
+                is PlugDevice -> device.status.switch
+                is LightDevice -> device.status.switch
                 else -> throw BenchmarkException(ErrorConstants.INVALID_DEVICE)
             }
             deviceRepository.controlDevice(device.deviceId, field)
@@ -74,7 +74,7 @@ class DeviceViewModel @Inject constructor(
             val updatedDevices = state.devices.map { device ->
                 if (device.deviceId == targetDeviceId) {
                     when(device) {
-                        is Plug -> {
+                        is PlugDevice -> {
                             device.copy(
                                 status = device.status.copy(
                                     switch = ControlField(
@@ -84,7 +84,7 @@ class DeviceViewModel @Inject constructor(
                                 )
                             )
                         }
-                        is Light -> {
+                        is LightDevice -> {
                             device.copy(
                                 status = device.status.copy(
                                     switch = ControlField(

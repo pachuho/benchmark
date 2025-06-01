@@ -10,9 +10,9 @@ import com.pachuho.benchmark.core.domain.error.ErrorConstants
 import com.pachuho.benchmark.core.domain.repository.DeviceRepository
 import com.pachuho.benchmark.core.model.device.ControlField
 import com.pachuho.benchmark.core.model.device.Device
-import com.pachuho.benchmark.core.model.device.DeviceCamera
-import com.pachuho.benchmark.core.model.device.Light
-import com.pachuho.benchmark.core.model.device.Plug
+import com.pachuho.benchmark.core.model.device.CameraDevice
+import com.pachuho.benchmark.core.model.device.LightDevice
+import com.pachuho.benchmark.core.model.device.PlugDevice
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -60,9 +60,9 @@ class DeviceDetailViewModel @Inject constructor(
             (_uiState.value as? DeviceDetailUiState.Device)?.let { state ->
                 updateDevice(state.device).let { device ->
                     val field = when(device) {
-                        is Plug -> device.status.switch
-                        is Light -> device.status.switch
-                        is DeviceCamera -> device.status.indicator
+                        is PlugDevice -> device.status.switch
+                        is LightDevice -> device.status.switch
+                        is CameraDevice -> device.status.indicator
                         else -> throw BenchmarkException(ErrorConstants.INVALID_DEVICE)
                     }
 
@@ -81,7 +81,7 @@ class DeviceDetailViewModel @Inject constructor(
 
     private fun updateDevice(device: Device): Device {
         return when(device) {
-            is Plug -> {
+            is PlugDevice -> {
                 device.copy(
                     status = device.status.copy(
                         switch = ControlField(
@@ -91,7 +91,7 @@ class DeviceDetailViewModel @Inject constructor(
                     )
                 )
             }
-            is Light -> {
+            is LightDevice -> {
                 device.copy(
                     status = device.status.copy(
                         switch = ControlField(
@@ -101,7 +101,7 @@ class DeviceDetailViewModel @Inject constructor(
                     )
                 )
             }
-            is DeviceCamera -> {
+            is CameraDevice -> {
                 device.copy(
                     status = device.status.copy(
                         indicator = ControlField(

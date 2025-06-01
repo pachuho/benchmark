@@ -8,7 +8,7 @@ import kotlinx.serialization.json.int
 import kotlinx.serialization.json.jsonPrimitive
 
 @Serializable
-data class Light(
+data class LightDevice(
     override val name: String,
     override val icon: Int = R.drawable.ic_light,
     override val deviceId: String,

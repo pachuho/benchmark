@@ -30,9 +30,9 @@ import com.pachuho.benchmark.core.designsystem.theme.BenchmarkTheme
 import com.pachuho.benchmark.core.designsystem.theme.Blue700
 import com.pachuho.benchmark.core.model.device.ControlField
 import com.pachuho.benchmark.core.model.device.Device
-import com.pachuho.benchmark.core.model.device.Light
+import com.pachuho.benchmark.core.model.device.LightDevice
 import com.pachuho.benchmark.core.model.device.LightStatus
-import com.pachuho.benchmark.core.model.device.Plug
+import com.pachuho.benchmark.core.model.device.PlugDevice
 import com.pachuho.benchmark.core.model.device.PlugStatus
 import com.pachuho.benchmark.core.ui.clickableWithoutEffect
 
@@ -122,7 +122,7 @@ internal fun DeviceItem(
 private fun DeviceItemPreviewPlug() {
     BenchmarkTheme {
         DeviceItem(
-            device = Plug(
+            device = PlugDevice(
                 name = "플러그",
                 deviceId = "1",
                 productId = "2",
@@ -145,7 +145,7 @@ private fun DeviceItemPreviewPlug() {
 private fun DeviceItemPreviewLight() {
     BenchmarkTheme {
         DeviceItem(
-            device = Light(
+            device = LightDevice(
                 name = "무드등",
                 deviceId = "2",
                 productId = "2",

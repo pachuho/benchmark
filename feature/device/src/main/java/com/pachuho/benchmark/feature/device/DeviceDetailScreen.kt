@@ -33,10 +33,7 @@ import com.pachuho.benchmark.core.designsystem.component.TopAppBarNavigationType
 import com.pachuho.benchmark.core.designsystem.theme.BenchmarkTheme
 import com.pachuho.benchmark.core.designsystem.theme.Blue050
 import com.pachuho.benchmark.core.designsystem.theme.Blue700
-import com.pachuho.benchmark.core.model.device.BasicDevice
 import com.pachuho.benchmark.core.model.device.Device
-import com.pachuho.benchmark.core.model.device.Light
-import com.pachuho.benchmark.core.model.device.Plug
 import com.pachuho.benchmark.core.ui.DevicePreviews
 import com.pachuho.benchmark.core.ui.clickableWithoutEffect
 import kotlinx.coroutines.flow.collectLatest
