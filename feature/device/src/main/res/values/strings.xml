@@ -2,4 +2,6 @@
 <resources>
     <string name="device_list">기기 목록</string>
     <string name="failure_get_device">기기 조회 실패</string>
+    <string name="indicator">상태 표시등</string>
+    <string name="private_mode">프라이빗 모드</string>
 </resources>

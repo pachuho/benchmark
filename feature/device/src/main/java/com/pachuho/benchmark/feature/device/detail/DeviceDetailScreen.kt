@@ -29,11 +29,13 @@ import com.pachuho.benchmark.core.designsystem.component.TopAppBarNavigationType
 import com.pachuho.benchmark.core.designsystem.theme.BenchmarkTheme
 import com.pachuho.benchmark.core.designsystem.theme.Blue050
 import com.pachuho.benchmark.core.designsystem.theme.Blue700
+import com.pachuho.benchmark.core.model.device.CameraDevice
 import com.pachuho.benchmark.core.model.device.ControlField
 import com.pachuho.benchmark.core.model.device.Device
 import com.pachuho.benchmark.core.model.device.LightDevice
 import com.pachuho.benchmark.core.model.device.PlugDevice
 import com.pachuho.benchmark.feature.device.R
+import com.pachuho.benchmark.feature.device.detail.component.CameraComponent
 import com.pachuho.benchmark.feature.device.detail.component.LightComponent
 import com.pachuho.benchmark.feature.device.detail.component.PlugComponent
 import kotlinx.coroutines.flow.collectLatest
@@ -67,17 +69,17 @@ private fun DeviceDetailScreen(
     onBack: () -> Unit,
     onControl: (ControlField<*>) -> Unit,
 ) {
-    Box(
+    Column(
         modifier = Modifier
             .background(Blue050)
-            .padding(padding)
+            .padding(padding),
+        horizontalAlignment = Alignment.CenterHorizontally
     ) {
         when(uiState) {
             is DeviceDetailUiState.Device -> {
                 val device = uiState.device
 
                 BenchmarkTopAppBar(
-                    modifier = Modifier.align(Alignment.TopCenter),
                     title = device.name,
                     navigationType = TopAppBarNavigationType.Back,
                     onNavigationClick = onBack
@@ -86,11 +88,11 @@ private fun DeviceDetailScreen(
                 when(device) {
                     is PlugDevice -> PlugComponent(device, onControl)
                     is LightDevice -> LightComponent(device, onControl)
+                    is CameraDevice -> CameraComponent(device, onControl)
                 }
             }
             DeviceDetailUiState.Error -> {
                 BenchmarkTopAppBar(
-                    modifier = Modifier.align(Alignment.TopCenter),
                     title = "Device",
                     navigationType = TopAppBarNavigationType.Back,
                     onNavigationClick = onBack

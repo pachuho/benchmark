@@ -21,8 +21,9 @@ internal class DevicePreviewParameterProvider : PreviewParameterProvider<DeviceU
                         )
                     )
                 )
-            },
-        )
+            }
+        ),
+        DeviceUiState.Error
     )
 }
 
