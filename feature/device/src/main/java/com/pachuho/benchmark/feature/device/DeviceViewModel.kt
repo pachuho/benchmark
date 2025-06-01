@@ -47,6 +47,7 @@ class DeviceViewModel @Inject constructor(
             .onCompletion { _isRefreshing.value = false }
             .onEach { _uiState.value = DeviceUiState.Devices(it) }
             .catch {
+                _isRefreshing.value = false
                 _uiState.value = DeviceUiState.Error
                 _errorFlow.emit(it)
             }

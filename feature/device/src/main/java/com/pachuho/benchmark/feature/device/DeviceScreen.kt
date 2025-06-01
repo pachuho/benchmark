@@ -10,6 +10,8 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
@@ -87,26 +89,25 @@ fun DeviceScreen(
             navigationType = TopAppBarNavigationType.None,
         )
 
-        when (uiState) {
-            is DeviceUiState.Devices -> {
-                val state = rememberPullToRefreshState()
+        val state = rememberPullToRefreshState()
 
-                PullToRefreshBox(
+        PullToRefreshBox(
+            isRefreshing = isRefreshing,
+            onRefresh = onRefresh,
+            state = state,
+            indicator = {
+                Indicator(
+                    modifier = Modifier.align(Alignment.TopCenter),
                     isRefreshing = isRefreshing,
-                    onRefresh = onRefresh,
-                    state = state,
-                    indicator = {
-                        Indicator(
-                            modifier = Modifier.align(Alignment.TopCenter),
-                            isRefreshing = isRefreshing,
-                            containerColor = Color.White,
-                            color = Blue700,
-                            state = state
-                        )
-                    }
-                ) {
+                    containerColor = Color.White,
+                    color = Blue700,
+                    state = state
+                )
+            }
+        ) {
+            when (uiState) {
+                is DeviceUiState.Devices -> {
                     LazyVerticalGrid(
-                        modifier = Modifier.background(color = Blue050),
                         columns = GridCells.Adaptive(minSize = 150.dp),
                         contentPadding = PaddingValues(12.dp),
                         verticalArrangement = Arrangement.spacedBy(12.dp),
@@ -114,9 +115,7 @@ fun DeviceScreen(
                     ) {
                         items(
                             items = uiState.devices,
-                            key = { device ->
-                                device.deviceId
-                            }
+                            key = { device -> device.deviceId }
                         ) { device ->
                             DeviceItem(
                                 device = device,
@@ -127,25 +126,28 @@ fun DeviceScreen(
                         }
                     }
                 }
-            }
 
-            is DeviceUiState.Error -> {
-                Column(
-                    modifier = Modifier.fillMaxSize(),
-                    verticalArrangement = Arrangement.Center,
-                    horizontalAlignment = Alignment.CenterHorizontally
-                ) {
-                    Icon(
-                        modifier = Modifier.size(50.dp),
-                        painter = painterResource(R.drawable.ic_error),
-                        contentDescription = null,
-                        tint = Blue700
-                    )
+                is DeviceUiState.Error -> {
+                    Column(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .verticalScroll(rememberScrollState()),
+                        verticalArrangement = Arrangement.Center,
+                        horizontalAlignment = Alignment.CenterHorizontally,
 
-                    Text(
-                        text = stringResource(R.string.failure_get_device),
-                        style = BenchmarkTheme.typography.titleMediumB,
-                    )
+                    ) {
+                        Icon(
+                            modifier = Modifier.size(50.dp),
+                            painter = painterResource(R.drawable.ic_error),
+                            contentDescription = null,
+                            tint = Blue700
+                        )
+
+                        Text(
+                            text = stringResource(R.string.failure_get_device),
+                            style = BenchmarkTheme.typography.titleMediumB,
+                        )
+                    }
                 }
             }
         }
