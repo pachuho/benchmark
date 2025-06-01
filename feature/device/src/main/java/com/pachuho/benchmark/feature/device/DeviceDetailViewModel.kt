@@ -10,6 +10,7 @@ import com.pachuho.benchmark.core.domain.error.ErrorConstants
 import com.pachuho.benchmark.core.domain.repository.DeviceRepository
 import com.pachuho.benchmark.core.model.device.ControlField
 import com.pachuho.benchmark.core.model.device.Device
+import com.pachuho.benchmark.core.model.device.DeviceCamera
 import com.pachuho.benchmark.core.model.device.Light
 import com.pachuho.benchmark.core.model.device.Plug
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -55,21 +56,26 @@ class DeviceDetailViewModel @Inject constructor(
     }
 
     fun toggleDevice() {
-        (_uiState.value as? DeviceDetailUiState.Device)?.let { state ->
-            updateDevice(state.device).let { device ->
-                val field = when(device) {
-                    is Plug -> device.status.switch
-                    is Light -> device.status.switch
-                    else -> throw BenchmarkException(ErrorConstants.INVALID_DEVICE)
-                }
-
-                deviceRepository.controlDevice(device.deviceId, field)
-                    .catch {
-                        _errorFlow.emit(it)
-                        DeviceDetailUiState.Device(updateDevice(device))
+        try {
+            (_uiState.value as? DeviceDetailUiState.Device)?.let { state ->
+                updateDevice(state.device).let { device ->
+                    val field = when(device) {
+                        is Plug -> device.status.switch
+                        is Light -> device.status.switch
+                        is DeviceCamera -> device.status.indicator
+                        else -> throw BenchmarkException(ErrorConstants.INVALID_DEVICE)
                     }
-                    .launchIn(viewModelScope)
+
+                    deviceRepository.controlDevice(device.deviceId, field)
+                        .catch {
+                            _errorFlow.emit(it)
+                            DeviceDetailUiState.Device(updateDevice(device))
+                        }
+                        .launchIn(viewModelScope)
+                }
             }
+        } catch (e: Exception) {
+            _errorFlow.tryEmit(e)
         }
     }
 
@@ -95,7 +101,17 @@ class DeviceDetailViewModel @Inject constructor(
                     )
                 )
             }
-            else -> throw BenchmarkException(ErrorConstants.INVALID_DEVICE)
+            is DeviceCamera -> {
+                device.copy(
+                    status = device.status.copy(
+                        indicator = ControlField(
+                            code = device.status.indicator.code,
+                            value = !device.status.indicator.value
+                        )
+                    )
+                )
+            }
+            else -> throw IllegalArgumentException()
         }.apply {
             _uiState.value = DeviceDetailUiState.Device(this)
         }

@@ -18,6 +18,7 @@ interface Device {
 enum class StatusType(val productId: String) {
     Plug("uxjr57hvapakd0io"),
     Light("mhf0rqd7uuvz6hf8"),
+    Camera("3cwbcqiz8qixphvu"),
     Basic("1");
 
     companion object {
