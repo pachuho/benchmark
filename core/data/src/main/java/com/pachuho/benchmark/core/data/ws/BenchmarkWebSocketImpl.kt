@@ -6,6 +6,7 @@ import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.serialization.json.Json
+import kotlinx.serialization.json.JsonElement
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.Response
@@ -26,12 +27,12 @@ class BenchmarkWebSocketImpl @Inject constructor(
         val request = Request.Builder().url(url).build()
         webSocket = client.newWebSocket(request, object : WebSocketListener() {
             override fun onMessage(webSocket: WebSocket, text: String) {
-                Timber.e("onMessage: $text")
-                try {
-                    _messageChannel.trySend(text.toSocketMessage())
-                } catch (e: Exception) {
-                    Timber.e(e)
-                }
+                Timber.e("onMessage: ${text.prettyJson()}")
+//                try {
+//                    _messageChannel.trySend(text.toSocketMessage())
+//                } catch (e: Exception) {
+//                    Timber.e(e)
+//                }
             }
             override fun onClosed(webSocket: WebSocket, code: Int, reason: String) {
                 _messageChannel.close()
@@ -48,5 +49,15 @@ class BenchmarkWebSocketImpl @Inject constructor(
 
     private fun String.toSocketMessage(): SocketMessage {
         return Json.decodeFromString<SocketMessage>(this)
+    }
+
+    fun String.prettyJson(): String {
+        return try {
+            val jsonElement: JsonElement = Json.parseToJsonElement(this)
+            Json { prettyPrint = true }.encodeToString(JsonElement.serializer(), jsonElement)
+        } catch (e: Exception) {
+            // 파싱 불가할 경우 원본 문자열 반환 (에러처리 가능)
+            this
+        }
     }
 }
