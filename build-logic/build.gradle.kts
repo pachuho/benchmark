@@ -15,9 +15,5 @@ gradlePlugin {
             id = "pachuho.android.hilt"
             implementationClass = "com.pachuho.benchmark.HiltAndroidPlugin"
         }
-        register("kotlinHilt") {
-            id = "pachuho.kotlin.hilt"
-            implementationClass = "com.pachuho.benchmark.HiltKotlinPlugin"
-        }
     }
 }

@@ -9,3 +9,7 @@ plugins {
     alias(libs.plugins.ksp) apply false
     alias(libs.plugins.google.service) apply false
 }
+
+apply {
+    from("gradle/dependencyGraph.gradle")
+}
