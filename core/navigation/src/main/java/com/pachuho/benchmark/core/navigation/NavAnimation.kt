@@ -47,7 +47,7 @@ object NavAnimation {
     private const val DURATION_MILLS = 500
 }
 
-inline fun <reified R : Route> NavGraphBuilder.composableWithAnimation(
+inline fun <reified R : BenchmarkRoute> NavGraphBuilder.composableWithAnimation(
     arguments: List<NamedNavArgument> = emptyList(),
     noinline content: @Composable AnimatedContentScope.(NavBackStackEntry) -> Unit
 ) {

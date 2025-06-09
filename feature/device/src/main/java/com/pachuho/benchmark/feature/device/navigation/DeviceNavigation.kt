@@ -8,13 +8,13 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import com.pachuho.benchmark.core.model.device.Device
-import com.pachuho.benchmark.core.navigation.Route
+import com.pachuho.benchmark.core.navigation.BenchmarkRoute
 import com.pachuho.benchmark.core.navigation.composableWithAnimation
 import com.pachuho.benchmark.feature.device.detail.PlugDetailRoute
 import com.pachuho.benchmark.feature.device.DeviceRoute
 
 fun NavController.navigateDevice(navOptions: NavOptions) {
-    navigate(Route.Device, navOptions)
+    navigate(BenchmarkRoute.Device, navOptions)
 }
 
 fun NavController.navigateDeviceDetail(deviceId: String) {
@@ -27,11 +27,11 @@ fun NavGraphBuilder.deviceNavGraph(
     onClickItem: (Device) -> Unit,
     onBack: () -> Unit
 ) {
-    composable<Route.Device> {
+    composable<BenchmarkRoute.Device> {
         DeviceRoute(padding, onShowErrorSnackBar, onClickItem)
     }
 
-    composableWithAnimation<Route.DeviceDetail>(
+    composableWithAnimation<BenchmarkRoute.DeviceDetail>(
         arguments = listOf(
             navArgument("deviceId") { type = NavType.StringType }
         )

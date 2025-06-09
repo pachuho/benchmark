@@ -5,11 +5,11 @@ import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
-import com.pachuho.benchmark.core.navigation.Route
+import com.pachuho.benchmark.core.navigation.BenchmarkRoute
 import com.pachuho.benchmark.feature.login.LoginRoute
 
 fun NavController.navigateLogin(navOptions: NavOptions) {
-    navigate(Route.Login, navOptions)
+    navigate(BenchmarkRoute.Login, navOptions)
 }
 
 fun NavGraphBuilder.loginNavGraph(
@@ -17,7 +17,7 @@ fun NavGraphBuilder.loginNavGraph(
     onLoginSuccess: () -> Unit,
     onShowErrorSnackBar: (throwable: Throwable) -> Unit,
 ) {
-    composable<Route.Login> {
+    composable<BenchmarkRoute.Login> {
         LoginRoute(padding, onLoginSuccess, onShowErrorSnackBar)
     }
 }

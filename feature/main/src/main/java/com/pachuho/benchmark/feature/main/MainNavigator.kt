@@ -7,7 +7,7 @@ import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navOptions
-import com.pachuho.benchmark.core.navigation.Route
+import com.pachuho.benchmark.core.navigation.BenchmarkRoute
 import com.pachuho.benchmark.feature.device.navigation.navigateDevice
 import com.pachuho.benchmark.feature.device.navigation.navigateDeviceDetail
 import com.pachuho.benchmark.feature.login.navigation.navigateLogin
@@ -15,7 +15,7 @@ import com.pachuho.benchmark.feature.login.navigation.navigateLogin
 internal class MainNavigator(
     val navController: NavHostController,
 ) {
-    val startDestination = Route.Login
+    val startDestination = BenchmarkRoute.Login
 
     fun navigateLogin(isTop: Boolean) {
         val navOptions = navOptions {
@@ -46,12 +46,12 @@ internal class MainNavigator(
     }
 
     fun popBackStackIfNotDevice() {
-        if (!isSameCurrentDestination<Route.Device>()) {
+        if (!isSameCurrentDestination<BenchmarkRoute.Device>()) {
             popBackStack()
         }
     }
 
-    private inline fun <reified T : Route> isSameCurrentDestination(): Boolean {
+    private inline fun <reified T : BenchmarkRoute> isSameCurrentDestination(): Boolean {
         return navController.currentDestination?.hasRoute<T>() == true
     }
 }
