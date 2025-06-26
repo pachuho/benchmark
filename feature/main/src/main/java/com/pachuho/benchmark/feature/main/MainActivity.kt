@@ -21,8 +21,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import com.pachuho.benchmark.core.designsystem.component.BenchmarkDialog
 import com.pachuho.benchmark.core.designsystem.theme.BenchmarkTheme
-import com.pachuho.benchmark.core.domain.error.BenchmarkException
-import com.pachuho.benchmark.core.domain.error.ErrorMapper
 import com.pachuho.benchmark.core.eventbus.EventBus
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
@@ -52,16 +50,12 @@ class MainActivity : ComponentActivity() {
         setContent {
             val navigator: MainNavigator = rememberMainNavigator()
             val coroutineScope = rememberCoroutineScope()
-            val localContextResource = LocalContext.current.resources
             val snackBarHostState = remember { SnackbarHostState() }
             val popupState = remember { mutableStateOf<EventBus.Event.Popup?>(null) }
-            val onShowErrorSnackBar: (throwable: Throwable) -> Unit = { throwable ->
-
-                coroutineScope.launch {
-                    snackBarHostState.showSnackbar(
-                        localContextResource.getString(ErrorMapper.fromThrowable(throwable))
-                    )
-                }
+            val onShowSnackBar: (message: String) -> Unit = { message ->
+                    coroutineScope.launch {
+                        snackBarHostState.showSnackbar(message)
+                    }
             }
 
             LaunchedEffect(Unit) {
@@ -69,7 +63,7 @@ class MainActivity : ComponentActivity() {
                     when(event) {
                         is EventBus.Event.Logout -> navigator.navigateLogin(true)
                         is EventBus.Event.Popup -> popupState.value = event
-                        is EventBus.Event.Message -> onShowErrorSnackBar(BenchmarkException(event.messageRes))
+                        is EventBus.Event.Message -> onShowSnackBar(event.message)
                     }
                 }
             }
@@ -97,7 +91,9 @@ class MainActivity : ComponentActivity() {
                         MainNavHost(
                             navigator = navigator,
                             padding = padding,
-                            onShowErrorSnackBar = onShowErrorSnackBar
+                            onShowErrorSnackBar = { throwable ->
+                                throwable.message?.let(onShowSnackBar)
+                            }
                         )
                     },
                     snackbarHost = { SnackbarHost(snackBarHostState) }

@@ -53,7 +53,7 @@ class BenchmarkFirebaseMessagingService : FirebaseMessagingService() {
 
     private fun sendNotification(title: String, body: String) {
         if(hasEmpty(title, body)) {
-            EventBus.Event.Message(R.string.invalid_message)
+            EventBus.Event.Message(baseContext.getString(R.string.invalid_message))
         } else {
             EventBus.Event.Popup(title, body)
         }.let {

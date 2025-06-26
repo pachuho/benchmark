@@ -5,8 +5,6 @@ import androidx.compose.runtime.Stable
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.pachuho.benchmark.core.domain.error.BenchmarkException
-import com.pachuho.benchmark.core.domain.error.ErrorConstants
 import com.pachuho.benchmark.core.domain.repository.DeviceRepository
 import com.pachuho.benchmark.core.model.device.ControlField
 import com.pachuho.benchmark.core.model.device.getUpdatedDevice
@@ -38,7 +36,7 @@ class DeviceDetailViewModel @Inject constructor(
         deviceId?.let {
             getDevice(deviceId)
         } ?: run {
-            _errorFlow.tryEmit(BenchmarkException(ErrorConstants.INVALID_DEVICE))
+            _errorFlow.tryEmit(Exception(Throwable("invalid device")))
         }
     }
 
@@ -67,7 +65,7 @@ class DeviceDetailViewModel @Inject constructor(
                     .launchIn(viewModelScope)
             } ?: run {
                 _uiState.value = DeviceDetailUiState.Device(state.device)
-                _errorFlow.tryEmit(BenchmarkException(ErrorConstants.INVALID_DEVICE))
+                _errorFlow.tryEmit(Exception(Throwable("invalid device")))
             }
         }
     }

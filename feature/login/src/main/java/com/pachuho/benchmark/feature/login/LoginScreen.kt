@@ -27,7 +27,6 @@ import com.pachuho.benchmark.core.designsystem.component.BenchmarkTopAppBar
 import com.pachuho.benchmark.core.designsystem.component.TextFieldType
 import com.pachuho.benchmark.core.designsystem.component.TopAppBarNavigationType
 import com.pachuho.benchmark.core.designsystem.theme.BenchmarkTheme
-import com.pachuho.benchmark.core.domain.error.ErrorConstants
 import com.pachuho.benchmark.core.ui.clickableWithoutEffect
 import kotlinx.coroutines.flow.collectLatest
 
@@ -56,7 +55,7 @@ internal fun LoginRoute(
                 uiState = uiState,
                 onLogin = { id, password ->
                     if(hasEmpty(id, password)) {
-                        onShowErrorSnackBar(Throwable(message = context.getString(ErrorConstants.EMPTY_INPUT_TEXT)))
+                        onShowErrorSnackBar(Throwable(message = context.getString(R.string.empty_input_text)))
                     } else {
                         viewModel.login(id, password)
                     }

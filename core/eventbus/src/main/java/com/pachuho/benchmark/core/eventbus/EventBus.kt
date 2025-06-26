@@ -15,7 +15,7 @@ class EventBus @Inject constructor() {
 
     sealed class Event {
         data object Logout : Event()
-        data class Message(@StringRes val messageRes: Int) : Event()
+        data class Message(val message: String) : Event()
         data class Popup(
             val title: String,
             val body: String

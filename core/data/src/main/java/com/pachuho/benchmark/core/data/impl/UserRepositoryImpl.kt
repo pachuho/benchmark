@@ -6,8 +6,6 @@ import com.pachuho.benchmark.core.data.api.model.request.LoginRequest
 import com.pachuho.benchmark.core.data.mapper.toDomain
 import com.pachuho.benchmark.core.datastore.datasource.AuthTokenPreferencesDataSource
 import com.pachuho.benchmark.core.datastore.datasource.FirebaseTokenPreferencesDataSource
-import com.pachuho.benchmark.core.domain.error.BenchmarkException
-import com.pachuho.benchmark.core.domain.error.ErrorConstants
 import com.pachuho.benchmark.core.domain.repository.UserRepository
 import com.pachuho.benchmark.core.model.User
 import kotlinx.coroutines.flow.Flow
@@ -36,7 +34,7 @@ internal class UserRepositoryImpl @Inject constructor(
         val result = firebaseTokenDataSource.firebaseToken.firstOrNull()?.let { token ->
             api.uploadFirebaseToken(FirebaseTokenRequest(token))
         } ?: run {
-            throw BenchmarkException(ErrorConstants.FIRE_TOKEN_NOT_FOUND)
+            throw Exception(Throwable("fcm token not found"))
         }
         emit(result)
     }
