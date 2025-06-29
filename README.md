@@ -10,7 +10,8 @@ IoT 3rd-party 라이브러리를 거치지 않고 대표적인 통신 라이브�
   - 기능별 모듈 구성
   - 모듈별 참조 라이브러리 구성
 ## 모듈 구조
-// TODO
+![project dot](https://github.com/user-attachments/assets/93341859-002d-4bcc-99b3-600e1dbe7d33)
+
 ## TODO
 - 로그인
   - JWT 기반 자동 로그인
