@@ -12,6 +12,7 @@ data class PlugDevice(
     override val icon: Int = R.drawable.ic_plug,
     override val deviceId: String,
     override val productId: String,
+    override val productType: ProductType = ProductType.PLUG,
     override val online: Boolean,
     override val status: PlugStatus
 ) : Device {

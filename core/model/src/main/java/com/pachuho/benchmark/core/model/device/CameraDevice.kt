@@ -12,6 +12,7 @@ data class CameraDevice(
     override val icon: Int = R.drawable.ic_camera,
     override val deviceId: String,
     override val productId: String,
+    override val productType: ProductType = ProductType.CAMERA,
     override val online: Boolean,
     override val status: CameraStatus
 ) : Device {

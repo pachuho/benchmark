@@ -13,6 +13,7 @@ data class LightDevice(
     override val icon: Int = R.drawable.ic_light,
     override val deviceId: String,
     override val productId: String,
+    override val productType: ProductType = ProductType.BLUNT,
     override val online: Boolean,
     override val status: LightStatus
 ) : Device {

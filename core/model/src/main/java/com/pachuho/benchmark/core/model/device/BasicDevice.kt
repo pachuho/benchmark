@@ -12,6 +12,7 @@ data class BasicDevice(
     override val icon: Int = R.drawable.ic_unkowun,
     override val deviceId: String,
     override val productId: String,
+    override val productType: ProductType = ProductType.BASIC,
     override val online: Boolean,
     override val status: BasicStatus
 ) : Device {

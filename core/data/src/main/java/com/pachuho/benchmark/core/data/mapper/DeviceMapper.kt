@@ -10,11 +10,11 @@ import com.pachuho.benchmark.core.model.device.LightDevice
 import com.pachuho.benchmark.core.model.device.LightStatus
 import com.pachuho.benchmark.core.model.device.PlugDevice
 import com.pachuho.benchmark.core.model.device.PlugStatus
-import com.pachuho.benchmark.core.model.device.StatusType
+import com.pachuho.benchmark.core.model.device.ProductType
 
 internal fun DeviceResponse.toDomain(): Device {
-    return when (StatusType.from(productId)) {
-        StatusType.Plug -> PlugDevice(
+    return when (productType) {
+        ProductType.PLUG -> PlugDevice(
             name = name,
             deviceId = deviceId,
             productId = productId,
@@ -22,7 +22,7 @@ internal fun DeviceResponse.toDomain(): Device {
             status = PlugStatus.fromJsonObj(status)
         )
 
-        StatusType.Light -> LightDevice(
+        ProductType.BLUNT -> LightDevice(
             name = name,
             deviceId = deviceId,
             productId = productId,
@@ -30,7 +30,7 @@ internal fun DeviceResponse.toDomain(): Device {
             status = LightStatus.fromJsonObj(status)
         )
 
-        StatusType.Camera -> CameraDevice(
+        ProductType.CAMERA -> CameraDevice(
             name = name,
             deviceId = deviceId,
             productId = productId,
@@ -38,7 +38,7 @@ internal fun DeviceResponse.toDomain(): Device {
             status = CameraStatus.fromJsonObj(status)
         )
 
-        StatusType.Basic -> BasicDevice(
+        ProductType.BASIC -> BasicDevice(
             name = name,
             deviceId = deviceId,
             productId = productId,
