@@ -35,12 +35,12 @@ class MainActivity : ComponentActivity() {
 
     override fun onResume() {
         super.onResume()
-        viewModel.startWebSocket()
+//        viewModel.startWebSocket()
     }
 
     override fun onStop() {
         super.onStop()
-        viewModel.stopWebSocket()
+//        viewModel.stopWebSocket()
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
