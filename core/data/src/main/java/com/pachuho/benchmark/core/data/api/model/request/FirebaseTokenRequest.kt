@@ -4,6 +4,6 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-internal data class FirebaseTokenRequest(
+data class FirebaseTokenRequest(
     @SerialName("token") val token: String,
 )

@@ -13,7 +13,7 @@ import retrofit2.http.GET
 import retrofit2.http.POST
 import retrofit2.http.Path
 
-internal interface JHApi {
+interface JHApi {
     @POST("/api/account/me")
     suspend fun getUser(): UserResponse
 
